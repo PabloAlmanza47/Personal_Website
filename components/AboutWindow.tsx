@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from "react";
-import {motion, AnimatePresence, DragControls} from "framer-motion"
+import {motion, AnimatePresence, DragControls, useDragControls} from "framer-motion"
 import pabloAscii from "../ascii/pabloAscii";
 import pabloName from "../ascii/pabloName";
 
@@ -8,16 +8,27 @@ import pabloName from "../ascii/pabloName";
 export default function AboutWindow() {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef(null)
+  const DragControls = useDragControls();
   return (
     <>
-      <div className="bg-black rounded-lg w-10 h-10 flex justify-center items-center cursor-pointer hover:-translate-y-1 hover:scale-110 transition-all duration-200" onClick={() => setIsOpen(true)}>
-          <p className="text-xs font-thin"> {'</>'} </p>
+      <div className="group bg-gray-950 rounded-full cursor-pointer hover:-translate-y-1 hover:scale-110 hover:rounded-lg transition-all duration-500">
+        <button className="bg-black rounded-full w-10 h-10 flex justify-center items-center outline outline-white transition-all  duration-500 group-hover:scale-110 group-hover:rounded-lg" onClick={() => setIsOpen(true)}>
+            <p className="text-xs font-thin"> {'</>'} </p>
+        </button>
       </div>
+
+
+
+
+
+
       <AnimatePresence>
         {isOpen && (
           <div ref={containerRef} className="fixed w-screen h-155 z-50 top-8 left-0">
             <motion.div 
               drag 
+              dragControls={DragControls}
+              dragListener={false}
               dragMomentum={false}
               dragElastic={0}
               whileDrag={{scale: 1.05}}
@@ -30,7 +41,7 @@ export default function AboutWindow() {
               <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col"> 
 
                 {/* Top Bar */}
-                <div className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
+                <div onPointerDown={(e) => DragControls.start(e)} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
                     <div className="absolute left-0 flex">
                       <button aria-label="Close window" className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={() => setIsOpen(false)}></button>
                       <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>

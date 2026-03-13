@@ -10,9 +10,7 @@ export default function Home() {
       <MenuBar/>
       <div className="w-96 h-14 flex flex-row justify-center items-center gap-2 absolute bottom-5"> 
         <AboutWindow />
-        <ProjectsWindow />
-        <BlogWindow />
-        <MusicWindow />
+        <div className="w-10 h-10 bg-black rounded-full hover:rounded-md hover:scale-125 transition-transform duration-500 ease-out"></div>
       </div>
     </main>
   );
