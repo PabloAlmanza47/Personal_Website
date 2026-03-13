@@ -1,11 +1,7 @@
 'use client'
 import { useState } from 'react';
-import { FaGithub, FaLinkedin, FaInstagram, FaEnvelope, FaJava} from 'react-icons/fa';
-import { SiJavascript, SiPython, SiReact, SiTypescript, SiHtml5, SiCss3, SiNodedotjs, SiNextdotjs, SiCplusplus, SiHaskell, SiTailwindcss, SiGit} from "react-icons/si";
-import Image from "next/image";
-import Link from "next/link";
 
-export default function MainCard() {
+export default function BlogWindow() {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>

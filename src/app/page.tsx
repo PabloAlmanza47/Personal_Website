@@ -1,6 +1,8 @@
-import MainCard from "../../components/MainCard";
+import ProjectsWindow from "../../components/ProjectsWindow";
 import AboutWindow from "../../components/AboutWindow";
+import BlogWindow from "../../components/BlogWindow";
 import MenuBar from "../../components/MenuBar";
+import MusicWindow from "../../components/MusicWindow";
 
 export default function Home() {
   return (
@@ -8,7 +10,9 @@ export default function Home() {
       <MenuBar/>
       <div className="w-96 h-14 flex flex-row justify-center items-center gap-2 absolute bottom-5"> 
         <AboutWindow />
-        <MainCard />
+        <ProjectsWindow />
+        <BlogWindow />
+        <MusicWindow />
       </div>
     </main>
   );
