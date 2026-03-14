@@ -12,9 +12,11 @@ type TerminalPrompts = {
 export default function Terminal({openWindow}: TerminalPrompts) {
   const containerRef = useRef<HTMLDivElement>(null);
   const DragControls = useDragControls();
-
+  const [currentDir, setCurrentDir] = useState("~");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
+
+
   type Line = {
     type: "command" | "output";
     text: string;
@@ -22,7 +24,10 @@ export default function Terminal({openWindow}: TerminalPrompts) {
   };
 
   const [history, setHistory] = useState<Line[]>([]);
-  const [currentDir, setCurrentDir] = useState("~");
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
+  
   {/* Fake file system */}
   const fileSystem = {
     "~": {
@@ -192,7 +197,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
             </div>
 
             {/* Terminal Body */}
-            <div className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
+            <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
               {/* Bott content */}
               <div className="flex flex-col">
                 <pre
@@ -241,6 +246,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
                   className="outline-none flex-1 text-green-300"
                 /> 
               </div>
+              <div ref={bottomRef}></div>
             </div>
           </div>
         </motion.div>

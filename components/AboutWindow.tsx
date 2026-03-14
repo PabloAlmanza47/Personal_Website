@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import {motion, AnimatePresence, useDragControls} from "framer-motion"
 import pabloAscii from "../ascii/pabloAscii";
 import pabloName from "../ascii/pabloName";
@@ -13,7 +13,7 @@ export default function AboutWindow({onClose} : AboutWindowProps) {
   const dragControls = useDragControls();
   return (
     <AnimatePresence>
-      <div ref={containerRef} className="fixed w-screen h-155 z-50 top-8 left-0">
+      <div ref={containerRef} className="fixed inset-0 pointer-events-none">
         <motion.div 
           drag 
           dragControls={dragControls}
@@ -25,7 +25,7 @@ export default function AboutWindow({onClose} : AboutWindowProps) {
           initial={{ scale: 0.65, opacity: 0, y: 40 }} 
           animate={{ scale: 1, opacity: 1, y: 0 }} 
           exit={{ scale: 0.15, opacity: 0, y: 40 }} 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg"
+          className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg"
         >
           <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col"> 
 
