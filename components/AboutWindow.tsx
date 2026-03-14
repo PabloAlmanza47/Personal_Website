@@ -42,7 +42,9 @@ export default function AboutWindow({onClose} : AboutWindowProps) {
             {/* Content */}
             <div className="flex flex-col flex-1 px-2 py-1 gap-1">
               {/*header*/}
-              <p className="text-xs font-mono text-gray-300">{`> ./about_me`}</p>
+              <div className="text-xs font-mono text-gray-300">
+                <span>pablo</span><span className="text-blue-700">@portfolio</span><span>:aboutMe/info$ </span>
+              </div>
 
               {/* Content inside of window*/}
               <div className="flex flex-row flex-1 gap-2 overflow-hidden">
@@ -80,9 +82,9 @@ export default function AboutWindow({onClose} : AboutWindowProps) {
                     </p>
                   </div>
                   {/* Additional Info */}
-                  <div className="font-mono text-[9px]">
+                  {/* <div className="font-mono text-[9px]">
                     Test 2
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

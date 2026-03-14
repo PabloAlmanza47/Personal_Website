@@ -1,6 +1,7 @@
 'use client'
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion"
+import welcomeAscii from "../ascii/welcomeAscii";
 
 
 
@@ -12,6 +13,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
   const containerRef = useRef<HTMLDivElement>(null);
   const DragControls = useDragControls();
 
+  const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
   type Line = {
     type: "command" | "output";
@@ -44,11 +46,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
           ...prev,
           { type: "command", text: cmd, dir: currentDir },
           { type: "output", text: "Available commands:" },
-          { type: "output", text: "help" },
-          { type: "output", text: "ls" },
-          { type: "output", text: "cd <folder>" },
-          { type: "output", text: "cat <file>" },
-          { type: "output", text: "clear / cls" }
+          { type: "output", text: "ls, cd <folder>, cat <file>, clear / cls" },
         ]);
         break;
 
@@ -115,7 +113,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
         break;
 
       case "cat":
-        if (arg === "aboutMe") {
+        if (arg === "info" && currentDir == "aboutMe") {
           setHistory(prev => [
             ...prev,
             { type: "command", text: cmd, dir: currentDir },
@@ -194,7 +192,26 @@ export default function Terminal({openWindow}: TerminalPrompts) {
             </div>
 
             {/* Terminal Body */}
-            <div className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto">
+            <div className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
+              {/* Bott content */}
+              <div className="flex flex-col">
+                <pre
+                    className="whitespace-pre select-none text-white"
+                    style={{
+                      fontFamily: "Cascadia Code, Consolas, monospace",
+                      fontVariantLigatures: "none",
+                      fontSize: "11px",
+                      lineHeight: "1"
+                    }}
+                >{welcomeAscii}
+                </pre>
+                <div className="font-mono text-xs flex flex-col">
+                  <div>
+                    <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
+                  </div>
+                  <span>--------------------------------------------------------------------</span>
+                </div>
+              </div>
 
               {/* Command History */}
               {history.map((line, i) => {
