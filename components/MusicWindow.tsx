@@ -5,7 +5,6 @@ import {motion, AnimatePresence, DragControls} from "framer-motion"
 
 
 export default function MusicWindow() {
-  const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef(null)
   return (
     <AnimatePresence>

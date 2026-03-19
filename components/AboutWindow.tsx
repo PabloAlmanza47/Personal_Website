@@ -6,15 +6,18 @@ import pabloName from "../ascii/pabloName";
 
 interface AboutWindowProps {
   onClose: () => void;
+  zIndex: number;
+  bringToFront: () => void;
 }
 
-export default function AboutWindow({onClose} : AboutWindowProps) {
+export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWindowProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const dragControls = useDragControls();
   return (
     <AnimatePresence>
-      <div ref={containerRef} className="fixed inset-0 pointer-events-none">
-        <motion.div 
+      <div ref={containerRef} style={{zIndex}} className="fixed inset-0 pointer-events-none">
+        <motion.div
+          onMouseDown={bringToFront} 
           drag 
           dragControls={dragControls}
           dragListener={false}
@@ -30,7 +33,7 @@ export default function AboutWindow({onClose} : AboutWindowProps) {
           <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col"> 
 
             {/* Top Bar */}
-            <div onPointerDown={(e) => dragControls.start(e)} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
+            <div onPointerDown={(e) => {bringToFront(); dragControls.start(e);}} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
                 <div className="absolute left-0 flex">
                   <button aria-label="Close window" className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={onClose}></button>
                   <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>

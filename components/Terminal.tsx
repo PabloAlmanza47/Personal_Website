@@ -7,9 +7,12 @@ import welcomeAscii from "../ascii/welcomeAscii";
 
 type TerminalPrompts = {
   openWindow: (name: string) => void;
+  zIndex: number;
+  bringToFront: () => void;
 };
 
-export default function Terminal({openWindow}: TerminalPrompts) {
+export default function Terminal({ openWindow, zIndex, bringToFront }: TerminalPrompts) {
+  const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const DragControls = useDragControls();
   const [currentDir, setCurrentDir] = useState("~");
@@ -27,7 +30,7 @@ export default function Terminal({openWindow}: TerminalPrompts) {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
-  
+
   {/* Fake file system */}
   const fileSystem = {
     "~": {
@@ -161,96 +164,111 @@ export default function Terminal({openWindow}: TerminalPrompts) {
   };
 
   return (
-    <AnimatePresence>
-      <div ref={containerRef} className="fixed w-screen h-155 z-50 top-8 left-0">
-        <motion.div
-          drag
-          dragControls={DragControls}
-          dragListener={false}
-          dragMomentum={false}
-          dragElastic={0}
-          whileDrag={{ scale: 1.05 }}
-          dragConstraints={containerRef}
-          initial={{ scale: 0.65, opacity: 0, y: 40 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.15, opacity: 0, y: 40 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg"
-        >
-          <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col">
+    <>
 
-            {/* Top Bar */}
-            <div
-              onPointerDown={(e) => DragControls.start(e)}
-              className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing"
+      <div className="bg-white/10 w-12 h-12 absolute bottom-4 p-1 rounded-full hover:w-20 transition-all duration-400 shadow-md shadow-black ease-in-out">
+        <button className="bg-black w-full h-full rounded-full outline outline-white text-gray-500 text-center hover:text-white transition-all duration-200" onClick={() => setIsOpen(true)}>{"</>"} </button>    
+      </div>
+
+      {isOpen &&
+        <AnimatePresence>
+          <div ref={containerRef} style={{zIndex}} className="fixed inset-0 pointer-events-none">
+            <motion.div
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                bringToFront();
+              }}
+              drag
+              dragControls={DragControls}
+              dragListener={false}
+              dragMomentum={false}
+              dragElastic={0}
+              whileDrag={{ scale: 1.05 }}
+              dragConstraints={containerRef}
+              initial={{ scale: 0.65, opacity: 0, y: 40 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.15, opacity: 0, y: 40 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg pointer-events-auto"
             >
-              <div className="absolute left-0 flex">
-                <button
-                  aria-label="Close window"
-                  className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm"
-                ></button>
-                <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
-                <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
-              </div>
-              <h1 className="absolute left-1/2 text-xs -translate-x-1/2 text-white/60">
-                {'>'} Terminal_
-              </h1>
-            </div>
+              <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col">
 
-            {/* Terminal Body */}
-            <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
-              {/* Bott content */}
-              <div className="flex flex-col">
-                <pre
-                    className="whitespace-pre select-none text-white"
-                    style={{
-                      fontFamily: "Cascadia Code, Consolas, monospace",
-                      fontVariantLigatures: "none",
-                      fontSize: "11px",
-                      lineHeight: "1"
-                    }}
-                >{welcomeAscii}
-                </pre>
-                <div className="font-mono text-xs flex flex-col">
-                  <div>
-                    <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
+                {/* Top Bar */}
+                <div
+                  onPointerDown={(e) => {
+                    bringToFront();
+                    DragControls.start(e)}}
+                  className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing"
+                >
+                  <div className="absolute left-0 flex">
+                    <button
+                      aria-label="Close window"
+                      className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={() => setIsOpen(false)}></button>
+                    <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
+                    <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
                   </div>
-                  <span>--------------------------------------------------------------------</span>
+                  <h1 className="absolute left-1/2 text-xs -translate-x-1/2 text-white/60">
+                    {'>'} Terminal_
+                  </h1>
+                </div>
+
+                {/* Terminal Body */}
+                <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
+                  {/* Bott content */}
+                  <div className="flex flex-col">
+                    <pre
+                        className="whitespace-pre select-none text-white"
+                        style={{
+                          fontFamily: "Cascadia Code, Consolas, monospace",
+                          fontVariantLigatures: "none",
+                          fontSize: "11px",
+                          lineHeight: "1"
+                        }}
+                    >{welcomeAscii}
+                    </pre>
+                    <div className="font-mono text-xs flex flex-col">
+                      <div>
+                        <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
+                      </div>
+                      <span>--------------------------------------------------------------------</span>
+                    </div>
+                  </div>
+
+                  {/* Command History */}
+                  {history.map((line, i) => {
+                    if (line.type === "command") {
+                      return (
+                        <div key={i}>
+                          <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{line.dir}$ </span>
+                          <span className="text-gray-600">{line.text}</span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={i} className="text-cyan-700">
+                        {line.text}
+                      </div>
+                    );
+                  })}
+
+                  {/* Current Input */}
+                  <div className="flex">
+                    <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{currentDir}$</span>
+                    <div
+                      ref={inputRef}
+                      contentEditable
+                      suppressContentEditableWarning
+                      onKeyDown={handleKeyDown}
+                      className="outline-none flex-1 text-green-300"
+                    /> 
+                  </div>
+                  <div ref={bottomRef}></div>
                 </div>
               </div>
-
-              {/* Command History */}
-              {history.map((line, i) => {
-                if (line.type === "command") {
-                  return (
-                    <div key={i}>
-                      <span>pablo</span><span className="text-blue-700">@portfolio</span><span>:{line.dir}$ </span>
-                      <span className="text-gray-600">{line.text}</span>
-                    </div>
-                  );
-                }
-                return (
-                  <div key={i} className="text-cyan-700">
-                    {line.text}
-                  </div>
-                );
-              })}
-
-              {/* Current Input */}
-              <div className="flex">
-                <span>pablo</span><span className="text-blue-700">@portfolio</span><span>:{currentDir}$</span>
-                <div
-                  ref={inputRef}
-                  contentEditable
-                  suppressContentEditableWarning
-                  onKeyDown={handleKeyDown}
-                  className="outline-none flex-1 text-green-300"
-                /> 
-              </div>
-              <div ref={bottomRef}></div>
-            </div>
+            </motion.div>
           </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
+        </AnimatePresence>
+      }
+    </>
+    
   );
 }

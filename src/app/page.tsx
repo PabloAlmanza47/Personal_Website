@@ -8,37 +8,105 @@ import Terminal from "../../components/Terminal";
 import { useState } from "react";
 
 export default function Home() {
-  const [openWindows, setOpenWindows] = useState<string[]>(["terminal"]);
+  type WindowType = {
+    id: string;
+    name: string;
+    z: number;
+  };
+
+  const [openWindows, setOpenWindows] = useState<WindowType[]>([
+    { id: crypto.randomUUID(), name: "terminal", z: 1 }
+  ]);
+
+  const [topZ, setTopZ] = useState(1);
+
 
   const openWindow = (name: string) => {
-    setOpenWindows(prev => {
-      if (prev.includes(name)) return prev;
-      return [...prev, name];
+    setTopZ(prevZ => {
+      const newZ = prevZ + 1;
+
+      setOpenWindows(prev => {
+        const existing = prev.find(w => w.name === name);
+
+        if (existing) {
+          return prev.map(w =>
+            w.id === existing.id ? { ...w, z: newZ } : w
+          );
+        }
+
+        return [
+          ...prev,
+          { id: crypto.randomUUID(), name, z: newZ }
+        ];
+      });
+
+      return newZ;
     });
   };
 
-  const closeWindow = (name: string) => {
-    setOpenWindows(prev => prev.filter(w => w !== name));
+  const closeWindow = (id: string) => {
+    setOpenWindows(prev => prev.filter(w => w.id !== id));
   };
+
+  const bringToFront = (id: string) => {
+    setTopZ(prev => {
+      const newZ = prev + 1;
+
+      setOpenWindows(wins =>
+        wins.map(w =>
+          w.id === id ? { ...w, z: newZ } : w
+        )
+      );
+
+      return newZ;
+    });
+  };
+
   return (
     <main className="bg-[#113532] font-bold flex justify-center items-center h-screen relative">
       <MenuBar/>
-        {openWindows.map((win, i) => {
-          switch (win) {
+        {openWindows.map(win => {
+          switch (win.name) {
             case "terminal":
-              return <Terminal key={i} openWindow={openWindow} />
+              return (
+                <Terminal
+                  key={win.id}
+                  openWindow={openWindow}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                />
+              );
 
             case "about":
-              return <AboutWindow key={i} onClose={() => closeWindow("about")}/>
+              return (
+                <AboutWindow
+                  key={win.id}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                  onClose={() => closeWindow(win.id)}
+                />
+              );
 
             case "projects":
-              return <ProjectsWindow key={i} />
+              return (
+                <ProjectsWindow
+                  key={win.id}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                />
+              );
 
             case "music":
-              return <MusicWindow key={i} />
+              return (
+                <MusicWindow
+                  key={win.id}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                />
+              );
 
             default:
-              return null
+              return null;
           }
         })}
 
