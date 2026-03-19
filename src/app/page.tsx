@@ -1,4 +1,5 @@
 'use client'
+import CurrentlyPlaying from "../../components/CurrentlyPlaying";
 import ProjectsWindow from "../../components/ProjectsWindow";
 import AboutWindow from "../../components/AboutWindow";
 import BlogWindow from "../../components/BlogWindow";
@@ -65,6 +66,7 @@ export default function Home() {
   return (
     <main className="bg-[#113532] font-bold flex justify-center items-center h-screen relative">
       <MenuBar/>
+      <CurrentlyPlaying />
         {openWindows.map(win => {
           switch (win.name) {
             case "terminal":
@@ -86,22 +88,14 @@ export default function Home() {
                   onClose={() => closeWindow(win.id)}
                 />
               );
-
-            case "projects":
-              return (
-                <ProjectsWindow
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                />
-              );
-
+              
             case "music":
               return (
                 <MusicWindow
                   key={win.id}
                   zIndex={win.z}
                   bringToFront={() => bringToFront(win.id)}
+                  onClose={() => closeWindow(win.id)}
                 />
               );
 

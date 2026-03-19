@@ -34,11 +34,11 @@ export default function Terminal({ openWindow, zIndex, bringToFront }: TerminalP
   {/* Fake file system */}
   const fileSystem = {
     "~": {
-      aboutMe: {
-        info: "Computer science student at Texas A&M building software, games, and experiments on the internet."
-      },
-      projects: {},
-      music: {}
+      information: {
+        aboutMe: {},
+        projects: {},
+        music: {},
+      }
     }
   };
 
@@ -121,7 +121,8 @@ export default function Terminal({ openWindow, zIndex, bringToFront }: TerminalP
         break;
 
       case "cat":
-        if (arg === "info" && currentDir == "aboutMe") {
+        {/* AboutMe Window */}
+        if (arg === "aboutMe") {
           setHistory(prev => [
             ...prev,
             { type: "command", text: cmd, dir: currentDir },
@@ -130,6 +131,19 @@ export default function Terminal({ openWindow, zIndex, bringToFront }: TerminalP
           openWindow("about");
           return;
         }
+
+        {/* Music Window */}
+        if (arg === "music") {
+          setHistory(prev => [
+            ...prev,
+            { type: "command", text: cmd, dir: currentDir },
+            { type: "output", text: "Opening aboutMe window..." }
+          ]);
+          openWindow("music");
+          return;
+        }
+
+        {/* Project Window */}
 
         setHistory(prev => [
           ...prev,
