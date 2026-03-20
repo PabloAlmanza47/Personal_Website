@@ -66,7 +66,6 @@ export default function Home() {
   return (
     <main className="bg-[#113532] font-bold flex justify-center items-center h-screen relative">
       <MenuBar/>
-      <CurrentlyPlaying />
         {openWindows.map(win => {
           switch (win.name) {
             case "terminal":

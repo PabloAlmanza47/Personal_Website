@@ -1,6 +1,7 @@
 'use client'
 import { useRef } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import CurrentlyPlaying from "./CurrentlyPlaying";
 
 interface MusicWindowProps {
   onClose: () => void;
@@ -53,8 +54,8 @@ export default function MusicWindow({ onClose, zIndex, bringToFront }: MusicWind
               <div className="text-xs font-mono text-gray-300">
                 <span>pablo</span><span className="text-blue-700">@portfolio</span><span>:music/info$ </span>
               </div>
-              <div className="bg-blue-400">
-
+              <div className="">
+                <CurrentlyPlaying />
               </div>
             </div>
           </div>
