@@ -13,24 +13,28 @@ export default function CurrentlyPlaying() {
   const [song, setSong] = useState<Song | null>(null);
   const [lastSong, setLastSong] = useState<Item | null>(null);
   const [progress, setProgress] = useState(0);
-  const [color, setColor] = useState("rgb(34,197,94)"); // default green
+  const [color, setColor] = useState("rgb(34,197,94)");
 
   const displaySong = song?.item || lastSong;
   const currentSongId = useRef<string | null>(null);
 
-  // fetch song data every 4 seconds
+  // ✅ SAFE polling (no spam, no leaks)
   useEffect(() => {
     const fac = new FastAverageColor();
+    let isMounted = true;
 
     const fetchSong = async () => {
       try {
+        if (document.hidden) return; // ✅ don't fetch if tab inactive
+
         const res = await fetch("/spotify/currently-playing");
         const data: Song = await res.json();
-        if (!data.item) return;
+
+        if (!data.item || !isMounted) return;
 
         const songId = `${data.item.name}-${data.item.artists.map(a => a.name).join(",")}`;
 
-        // reset progress if song changed
+        // reset progress if new song
         if (songId !== currentSongId.current) {
           setProgress(data.progress_ms ?? 0);
           currentSongId.current = songId;
@@ -39,11 +43,13 @@ export default function CurrentlyPlaying() {
         setSong(data);
         setLastSong(data.item);
 
-        // extract album color
+        // 🎨 extract album color
         const img = new Image();
         img.crossOrigin = "anonymous";
         img.src = data.item.album.images[0].url;
+
         img.onload = async () => {
+          if (!isMounted) return;
           try {
             const result = await fac.getColorAsync(img);
             setColor(result.rgb);
@@ -51,20 +57,25 @@ export default function CurrentlyPlaying() {
             console.error("Color extraction failed", err);
           }
         };
+
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchSong();
-    const interval = setInterval(fetchSong, 4000);
-    return () => clearInterval(interval);
+    const interval = setInterval(fetchSong, 5000); // ✅ safer interval
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
-  // smooth progress increment independent of fetch
+  // ✅ smooth progress animation
   useEffect(() => {
-    const tickInterval = 50; // ms
-    const incrementMs = 60;   // how fast it counts up
+    const tickInterval = 50;
+    const incrementMs = 60;
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -96,14 +107,8 @@ export default function CurrentlyPlaying() {
     return `${min}:${sec}`;
   };
 
-  // Only show box shadow if song is playing
-  const shadowStyle = song?.playing
-    ? `0 0 15px ${color}`
-    : "none";
-
-  const barShadow = song?.playing
-    ? `0 0 10px ${color}`
-    : "none";
+  const shadowStyle = song?.playing ? `0 0 15px ${color}` : "none";
+  const barShadow = song?.playing ? `0 0 10px ${color}` : "none";
 
   return (
     <div
@@ -114,6 +119,7 @@ export default function CurrentlyPlaying() {
       }}
     >
       <div className="flex gap-3 items-center">
+        
         {/* Album Art */}
         <img
           src={displaySong.album.images[0].url}

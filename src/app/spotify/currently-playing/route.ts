@@ -1,6 +1,9 @@
 // app/spotify/currently-playing/route.ts
 import { NextResponse } from "next/server";
 
+let cachedLastSong: any = null;  // remembers the last fetched track
+let lastFetchTime = 0;
+
 async function getAccessToken() {
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
@@ -24,16 +27,19 @@ async function getAccessToken() {
 }
 
 export async function GET() {
+  const now = Date.now();
+
   try {
     const tokenData = await getAccessToken();
     const accessToken = tokenData.access_token;
+    if (!accessToken)
+      return NextResponse.json({ playing: false, item: cachedLastSong });
 
-    if (!accessToken) {
-      return NextResponse.json(
-        { error: "Failed to get access token" },
-        { status: 500 }
-      );
-    }
+    // Avoid calling Spotify too frequently
+    if (now - lastFetchTime < 5000 && cachedLastSong)
+      return NextResponse.json(cachedLastSong);
+
+    lastFetchTime = now;
 
     // 1️⃣ Try currently playing
     const currentRes = await fetch(
@@ -45,16 +51,18 @@ export async function GET() {
 
     if (currentRes.status === 200) {
       const currentData = await currentRes.json();
-
       if (currentData?.item) {
-        return NextResponse.json({
-          playing: true,
+        const songData = {
+          playing: currentData.is_playing,
           item: currentData.item,
-        });
+          progress_ms: currentData.progress_ms ?? 0,
+        };
+        cachedLastSong = songData.item; // cache last song
+        return NextResponse.json(songData);
       }
     }
 
-    // 2️⃣ Fallback: last played song
+    // 2️⃣ Fallback to recently played (if no current song)
     const recentRes = await fetch(
       "https://api.spotify.com/v1/me/player/recently-played?limit=1",
       {
@@ -62,29 +70,25 @@ export async function GET() {
       }
     );
 
-    // Check if the request succeeded
-    if (!recentRes.ok) {
-      const errorText = await recentRes.text();
-      console.log("RECENTLY PLAYED ERROR:", errorText);
-      return NextResponse.json({ playing: false, item: null });
+    if (recentRes.ok) {
+      const recentData = await recentRes.json();
+      if (recentData?.items?.length > 0) {
+        const lastTrack = recentData.items[0].track;
+        cachedLastSong = lastTrack; // update cache
+        return NextResponse.json({ playing: false, item: lastTrack, progress_ms: 0 });
+      }
     }
 
-    const recentData = await recentRes.json();
-
-    // Ensure items exist
-    if (recentData?.items && recentData.items.length > 0) {
-      return NextResponse.json({
-        playing: false,
-        item: recentData.items[0].track,
-      });
+    // 3️⃣ If nothing, return cached last song if exists
+    if (cachedLastSong) {
+      return NextResponse.json({ playing: false, item: cachedLastSong, progress_ms: 0 });
     }
 
-    // Nothing available
-    return NextResponse.json({ playing: false, item: null });
+    return NextResponse.json({ playing: false, item: null, progress_ms: 0 });
+
   } catch (err) {
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 500 }
-    );
+    console.error("SPOTIFY ROUTE ERROR:", err);
+    // fallback to cached last song
+    return NextResponse.json({ playing: false, item: cachedLastSong, progress_ms: 0 });
   }
 }

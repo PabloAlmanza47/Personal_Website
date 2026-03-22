@@ -7,6 +7,7 @@ import MenuBar from "../../components/MenuBar";
 import MusicWindow from "../../components/MusicWindow";
 import Terminal from "../../components/Terminal";
 import { useState } from "react";
+import {AnimatePresence} from "framer-motion"
 
 export default function Home() {
   type WindowType = {
@@ -20,7 +21,6 @@ export default function Home() {
   ]);
 
   const [topZ, setTopZ] = useState(1);
-
 
   const openWindow = (name: string) => {
     setTopZ(prevZ => {
@@ -66,6 +66,10 @@ export default function Home() {
   return (
     <main className="bg-[#113532] font-bold flex justify-center items-center h-screen relative">
       <MenuBar/>
+      <div className="bg-white/10 w-12 h-12 absolute bottom-4 p-1 rounded-full hover:w-20 transition-all duration-400 shadow-md shadow-black ease-in-out">
+        <button className="bg-black w-full h-full rounded-full outline outline-white text-gray-500 text-center hover:text-white transition-all duration-200" onClick={() => openWindow("terminal")}>{"</>"} </button>    
+      </div>
+      <AnimatePresence>
         {openWindows.map(win => {
           switch (win.name) {
             case "terminal":
@@ -75,6 +79,7 @@ export default function Home() {
                   openWindow={openWindow}
                   zIndex={win.z}
                   bringToFront={() => bringToFront(win.id)}
+                  onClose={() => closeWindow(win.id)}
                 />
               );
 
@@ -112,8 +117,7 @@ export default function Home() {
               return null;
           }
         })}
-
-        {/* <ProjectsWindow /> */}
+      </AnimatePresence>
     </main>
   );
 }
