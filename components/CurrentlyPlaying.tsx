@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Equalizer from "./Equalizer";
 
 interface Artist { name: string; }
 interface AlbumImage { url: string; }
@@ -37,17 +38,20 @@ export default function CurrentlyPlaying() {
   if (!displaySong) return <div>No songs have been played yet</div>;
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      <img
-        src={displaySong.album.images[0].url}
-        alt={displaySong.name}
-        width={100}
-        height={100}
-      />
-      <div>
-        <h3>{song?.playing ? "Now Playing:" : "Last Played:"}</h3>
-        <p>{displaySong.name} by {displaySong.artists.map(a => a.name).join(", ")}</p>
+    <div className="flex flex-col flex-1 h-full justify-between">
+      <div className="flex items-center gap-2">
+        <img
+          src={displaySong.album.images[0].url}
+          alt={displaySong.name}
+          width={200}
+          height={200}
+        />
+        <div className="font-mono">
+          <h3>{song?.playing ? "Now Playing:" : "Last Played:"}</h3>
+          <p>{displaySong.name} by {displaySong.artists.map(a => a.name).join(", ")}</p>
+        </div>
       </div>
+      <Equalizer isPlaying={song.playing} />
     </div>
   );
 }

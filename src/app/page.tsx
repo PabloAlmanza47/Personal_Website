@@ -98,6 +98,16 @@ export default function Home() {
                 />
               );
 
+            case "projects":
+              return (
+                <ProjectsWindow
+                  key={win.id}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                  onClose={() => closeWindow(win.id)}
+                />
+              );
+
             default:
               return null;
           }

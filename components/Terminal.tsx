@@ -4,7 +4,6 @@ import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import welcomeAscii from "../ascii/welcomeAscii";
 
 
-
 type TerminalPrompts = {
   openWindow: (name: string) => void;
   zIndex: number;
@@ -137,13 +136,22 @@ export default function Terminal({ openWindow, zIndex, bringToFront }: TerminalP
           setHistory(prev => [
             ...prev,
             { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: "Opening aboutMe window..." }
+            { type: "output", text: "Opening music window..." }
           ]);
           openWindow("music");
           return;
         }
 
         {/* Project Window */}
+        if (arg === "projects") {
+          setHistory(prev => [
+            ...prev,
+            { type: "command", text: cmd, dir: currentDir },
+            { type: "output", text: "Opening projects window..." }
+          ]);
+          openWindow("projects");
+          return;
+        }
 
         setHistory(prev => [
           ...prev,

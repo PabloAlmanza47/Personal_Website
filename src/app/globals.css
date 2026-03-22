@@ -25,3 +25,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bar {
+  width: 16px;
+  height: 20%;
+  background-color: #2643317f; /* Spotify green */
+  border-radius: 2px;
+}
+
+/* Animations */
+@keyframes bar1 {
+  0%, 100% { height: 20%; }
+  50% { height: 100%; }
+}
+
+@keyframes bar2 {
+  0%, 100% { height: 40%; }
+  50% { height: 80%; }
+}
+
+@keyframes bar3 {
+  0%, 100% { height: 30%; }
+  50% { height: 90%; }
+}
+
+.animate-bar1 {
+  animation: bar1 1s ease-in-out infinite;
+}
+
+.animate-bar2 {
+  animation: bar2 1.2s ease-in-out infinite;
+}
+
+.animate-bar3 {
+  animation: bar3 0.8s ease-in-out infinite;
+}
