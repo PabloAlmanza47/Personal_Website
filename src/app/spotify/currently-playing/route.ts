@@ -1,8 +1,8 @@
 // app/spotify/currently-playing/route.ts
 import { NextResponse } from "next/server";
 
-let cachedLastSong: any = null;  // remembers the last fetched track
-let lastFetchTime = 0;
+// cache last played track in memory
+let lastPlayed: any = null;
 
 async function getAccessToken() {
   const res = await fetch("https://accounts.spotify.com/api/token", {
@@ -11,9 +11,7 @@ async function getAccessToken() {
       Authorization:
         "Basic " +
         Buffer.from(
-          process.env.SPOTIFY_CLIENT_ID +
-            ":" +
-            process.env.SPOTIFY_CLIENT_SECRET
+          `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
         ).toString("base64"),
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -23,72 +21,71 @@ async function getAccessToken() {
     }),
   });
 
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error("Failed to get access token: " + text);
+  }
+
   return res.json();
 }
 
 export async function GET() {
-  const now = Date.now();
-
   try {
     const tokenData = await getAccessToken();
     const accessToken = tokenData.access_token;
-    if (!accessToken)
-      return NextResponse.json({ playing: false, item: cachedLastSong });
 
-    // Avoid calling Spotify too frequently
-    if (now - lastFetchTime < 5000 && cachedLastSong)
-      return NextResponse.json(cachedLastSong);
+    if (!accessToken) {
+      throw new Error("No access token returned from Spotify");
+    }
 
-    lastFetchTime = now;
-
-    // 1️⃣ Try currently playing
-    const currentRes = await fetch(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+    // check currently playing
+    const currentRes = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
     if (currentRes.status === 200) {
       const currentData = await currentRes.json();
       if (currentData?.item) {
-        const songData = {
-          playing: currentData.is_playing,
+        lastPlayed = currentData.item; // update cache
+        return NextResponse.json({
+          playing: true,
           item: currentData.item,
           progress_ms: currentData.progress_ms ?? 0,
-        };
-        cachedLastSong = songData.item; // cache last song
-        return NextResponse.json(songData);
+        });
       }
     }
 
-    // 2️⃣ Fallback to recently played (if no current song)
+    // if currently-playing empty, return cached last played
+    if (lastPlayed) {
+      return NextResponse.json({
+        playing: false,
+        item: lastPlayed,
+        progress_ms: lastPlayed.progress_ms ?? 0,
+      });
+    }
+
+    // only fetch recently-played once if nothing cached
     const recentRes = await fetch(
       "https://api.spotify.com/v1/me/player/recently-played?limit=1",
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     );
 
-    if (recentRes.ok) {
-      const recentData = await recentRes.json();
-      if (recentData?.items?.length > 0) {
-        const lastTrack = recentData.items[0].track;
-        cachedLastSong = lastTrack; // update cache
-        return NextResponse.json({ playing: false, item: lastTrack, progress_ms: 0 });
-      }
+    if (!recentRes.ok) {
+      const text = await recentRes.text();
+      console.log("RECENTLY PLAYED ERROR:", text);
+      return NextResponse.json({ playing: false, item: null });
     }
 
-    // 3️⃣ If nothing, return cached last song if exists
-    if (cachedLastSong) {
-      return NextResponse.json({ playing: false, item: cachedLastSong, progress_ms: 0 });
+    const recentData = await recentRes.json();
+    if (recentData?.items?.length > 0) {
+      lastPlayed = recentData.items[0].track;
+      return NextResponse.json({ playing: false, item: lastPlayed });
     }
 
-    return NextResponse.json({ playing: false, item: null, progress_ms: 0 });
+    return NextResponse.json({ playing: false, item: null });
 
   } catch (err) {
-    console.error("SPOTIFY ROUTE ERROR:", err);
-    // fallback to cached last song
-    return NextResponse.json({ playing: false, item: cachedLastSong, progress_ms: 0 });
+    console.error("Spotify route error:", err);
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
 }

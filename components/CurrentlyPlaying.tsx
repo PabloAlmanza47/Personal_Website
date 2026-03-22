@@ -64,7 +64,7 @@ export default function CurrentlyPlaying() {
     };
 
     fetchSong();
-    const interval = setInterval(fetchSong, 5000); // ✅ safer interval
+    const interval = setInterval(fetchSong, 15_000); // ✅ safer interval
 
     return () => {
       isMounted = false;
