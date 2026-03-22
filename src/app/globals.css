@@ -29,7 +29,7 @@ body {
 .bar {
   width: 16px;
   height: 20%;
-  background-color: #2643317f; /* Spotify green */
+  background-color: currentColor; /* Spotify green */
   border-radius: 2px;
 }
 
