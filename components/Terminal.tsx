@@ -18,6 +18,10 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
 
+  //command history
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+
 
   type Line = {
     type: "command" | "output";
@@ -41,6 +45,15 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
     }
   };
 
+  //History helper
+  const addHistory = (cmd: string, outputs: string[] = []) => {
+    setHistory(prev => [
+      ...prev,
+      { type: "command", text: cmd, dir: currentDir },
+      ...outputs.map(text => ({ type: "output" as const, text }))
+    ]);
+  };
+
   {/* Deciding what to do with the input of the user */}
   const runCommand = (cmd: string) => {
     const parts = cmd.split(" ");
@@ -49,11 +62,9 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
 
     switch (base) {
       case "help":
-        setHistory(prev => [
-          ...prev,
-          { type: "command", text: cmd, dir: currentDir },
-          { type: "output", text: "Available commands:" },
-          { type: "output", text: "ls, cd <folder>, cat <file>, clear / cls" },
+        addHistory(cmd, [
+          "Available commands:",
+          "ls, cd <folder>, cat <file>, clear / cls"
         ]);
         break;
 
@@ -171,6 +182,30 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+
+      const newIndex = Math.min(historyIndex + 1, commandHistory.length - 1);
+      setHistoryIndex(newIndex);
+
+      if (inputRef.current) {
+        inputRef.current.innerText =
+          commandHistory[commandHistory.length - 1 - newIndex] || "";
+      }
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+
+      const newIndex = Math.max(historyIndex - 1, -1);
+      setHistoryIndex(newIndex);
+
+      if (inputRef.current) {
+        inputRef.current.innerText =
+          newIndex === -1 ? "" : commandHistory[commandHistory.length - 1 - newIndex];
+      }
+    }
+
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -178,6 +213,9 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
       if (!cmd) return;
 
       runCommand(cmd)
+
+      setCommandHistory(prev => [...prev, cmd]);
+      setHistoryIndex(-1);
 
       if (inputRef.current) {
         inputRef.current.innerText = "";
@@ -243,7 +281,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
                 <div>
                   <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
                 </div>
-                <span>--------------------------------------------------------------------</span>
+                <span>----------------------------------------------------------------------</span>
               </div>
             </div>
 
