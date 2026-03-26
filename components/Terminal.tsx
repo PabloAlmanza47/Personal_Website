@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import welcomeAscii from "../ascii/welcomeAscii";
+import useSound from "use-sound";
 
 
 type TerminalPrompts = {
@@ -60,6 +61,7 @@ const fileSystem: FileSystem = {
 
 
 export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: TerminalPrompts) {
+  const [playClick] = useSound("/sounds/click.mp3", { volume: 0.5 });
   const containerRef = useRef<HTMLDivElement>(null);
   const DragControls = useDragControls();
   const [currentDir, setCurrentDir] = useState("~");
@@ -284,7 +286,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
             <div className="absolute left-0 flex">
               <button
                 aria-label="Close window"
-                className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={onClose}></button>
+                className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={() => {playClick(); onClose();}}></button>
               <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
               <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
             </div>
