@@ -11,6 +11,54 @@ type TerminalPrompts = {
   bringToFront: () => void;
 };
 
+  type File = {
+    type: "file";
+    content: string[];
+  };
+
+  type Folder = {
+    type: "folder";
+    children: Record<string, File | Folder>;
+  };
+
+  type FileSystem = {
+    "~": Folder;
+  };
+
+{/* Fake file system */}
+const fileSystem: FileSystem = {
+  "~": {
+    type: "folder",
+    children: {
+      information: {
+        type: "folder",
+        children: {
+          about: {
+            type: "file",
+            content: [
+              "Name: Pablo Almanza",
+              "Role: Web Developer"
+            ]
+          },
+          projects: {
+            type: "file",
+            content: [
+              "• Portfolio OS",
+              "• Library System"
+            ]
+          }
+        }
+      },
+      music: {
+        type: "file",
+        content: ["Hip-Hop", "R&B"]
+      }
+    }
+  }
+};
+
+
+
 export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: TerminalPrompts) {
   const containerRef = useRef<HTMLDivElement>(null);
   const DragControls = useDragControls();
@@ -32,18 +80,8 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   const [history, setHistory] = useState<Line[]>([]);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    inputRef.current?.focus();
   }, [history]);
-
-  {/* Fake file system */}
-  const fileSystem = {
-    "~": {
-      information: {
-        aboutMe: {},
-        projects: {},
-        music: {},
-      }
-    }
-  };
 
   //History helper
   const addHistory = (cmd: string, outputs: string[] = []) => {
@@ -53,6 +91,19 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
       ...outputs.map(text => ({ type: "output" as const, text }))
     ]);
   };
+
+  const getCurrentDir = (): Folder => {
+  if (currentDir === "~") return fileSystem["~"];
+
+  const root = fileSystem["~"];
+  const next = root.children[currentDir];
+
+  if (next && next.type === "folder") {
+    return next;
+  }
+
+  return root;
+};
 
   {/* Deciding what to do with the input of the user */}
   const runCommand = (cmd: string) => {
@@ -73,104 +124,83 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
         setHistory([]);
         break;
 
-      case "ls":
-        const dir =
-          currentDir === "~"
-            ? fileSystem["~"]
-            : fileSystem["~"][currentDir as keyof typeof fileSystem["~"]];
+      case "ls": {
+        const dir = getCurrentDir();
 
-        if (!dir) return;
+        const output = Object.entries(dir.children).map(([name, item]) =>
+          item.type === "folder" ? `${name}/` : name
+        );
 
-        setHistory(prev => [
-          ...prev,
-          { type: "command", text: cmd, dir: currentDir },
-          ...Object.keys(dir).map(name => ({
-            type: "output" as const,
-            text: name
-          }))
-        ]);
+        addHistory(cmd, output);
+        break;
+      }
 
+      case "open":
+        if (!arg) {
+          addHistory(cmd, ["open requires a window name"]);
+          break;
+        }
+
+        const validWindows = ["about", "projects", "music", "terminal"];
+
+        if (!validWindows.includes(arg)) {
+          addHistory(cmd, [`Window '${arg}' not found`]);
+          break;
+        }
+
+        openWindow(arg);
+        addHistory(cmd, [`Opening ${arg} window...`]);
         break;
 
-      case "cd":
+      case "cd": {
         if (!arg) {
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: "cd requires a folder name" }
-          ]);
-          return;
+          addHistory(cmd, ["cd requires a folder name"]);
+          break;
         }
 
         if (arg === "..") {
           setCurrentDir("~");
-
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir }
-          ]);
-
-          return;
+          addHistory(cmd);
+          break;
         }
+        
 
-        if (fileSystem["~"][arg as keyof typeof fileSystem["~"]]) {
+        const dir = getCurrentDir();
+        const next = dir.children[arg];
+
+        if (next && next.type === "folder") {
           setCurrentDir(arg);
-
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir }
-          ]);
+          addHistory(cmd);
         } else {
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: `Folder '${arg}' not found` }
-          ]);
+          addHistory(cmd, [`Folder '${arg}' not found`]);
         }
 
         break;
+      }
+        
 
-      case "cat":
-        {/* AboutMe Window */}
-        if (arg === "aboutMe") {
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: "Opening aboutMe window..." }
-          ]);
-          openWindow("about");
-          return;
+      case "cat": {
+        if (!arg) {
+          addHistory(cmd, ["cat requires a file name"]);
+          break;
         }
 
-        {/* Music Window */}
-        if (arg === "music") {
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: "Opening music window..." }
-          ]);
-          openWindow("music");
-          return;
+        const dir = getCurrentDir();
+        const item = dir.children[arg];
+
+        if (!item) {
+          addHistory(cmd, [`File '${arg}' not found`]);
+          break;
         }
 
-        {/* Project Window */}
-        if (arg === "projects") {
-          setHistory(prev => [
-            ...prev,
-            { type: "command", text: cmd, dir: currentDir },
-            { type: "output", text: "Opening projects window..." }
-          ]);
-          openWindow("projects");
-          return;
+        if (item.type === "file") {
+          addHistory(cmd, item.content);
+          break;
         }
 
-        setHistory(prev => [
-          ...prev,
-          { type: "command", text: cmd, dir: currentDir },
-          { type: "output", text: `File '${arg}' not found` }
-        ]);
-
+        addHistory(cmd, [`'${arg}' is a folder`]);
         break;
+      }
 
       default:
         setHistory(prev => [
@@ -210,7 +240,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
       e.preventDefault();
 
       const cmd = inputRef.current?.innerText.trim() || "";
-      if (!cmd) return;
+      if (!cmd.trim()) return;
 
       runCommand(cmd)
 
