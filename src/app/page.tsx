@@ -1,5 +1,4 @@
 'use client'
-import CurrentlyPlaying from "../../components/CurrentlyPlaying";
 import ProjectsWindow from "../../components/ProjectsWindow";
 import AboutWindow from "../../components/AboutWindow";
 import BlogWindow from "../../components/BlogWindow";

@@ -1,8 +1,9 @@
 'use client'
-import { useRef } from "react";
-import {motion, useDragControls} from "framer-motion"
+import { useRef, useState } from "react";
+import {motion, useDragControls, AnimatePresence} from "framer-motion"
 import pabloAscii from "../ascii/pabloAscii";
 import pabloName from "../ascii/pabloName";
+import { ReadCvLogoIcon, GithubLogoIcon, EnvelopeSimpleIcon, InstagramLogoIcon, LinkedinLogoIcon} from "@phosphor-icons/react";
 
 interface AboutWindowProps {
   onClose: () => void;
@@ -10,9 +11,10 @@ interface AboutWindowProps {
   bringToFront: () => void;
 }
 
-export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWindowProps) {
+export default function AboutWindow({onClose, zIndex, bringToFront}: AboutWindowProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const dragControls = useDragControls();
+  const [showEmailWindow, setShowEmailWindow] = useState(false);
   return (
     <div ref={containerRef} style={{zIndex}} className="fixed inset-0 pointer-events-none">
       <motion.div
@@ -83,14 +85,53 @@ export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWind
                     Pablo is also passionate about indie music, teaching programming, and breaking down complex technical ideas so others can learn how to build their own tools and projects.                      
                   </p>
                 </div>
+                
                 {/* Additional Info */}
-                {/* <div className="font-mono text-[9px]">
-                  Test 2
-                </div> */}
+                <div className="flex flex-row h-full items-center justify-center gap-1">
+                  {[
+                    {
+                      icon: <EnvelopeSimpleIcon size={20} />,
+                      action:() => setShowEmailWindow(true),
+                      label: "Email"
+                    },
+                    {
+                      icon: <LinkedinLogoIcon size={20} />,
+                      action: () => window.open("https://www.linkedin.com/in/pabloalmanza/", "_blank"),
+                      label: "LinkedIn"
+                    },
+                    {
+                      icon: <InstagramLogoIcon size={20} />,
+                      action: () => window.open("https://instagram.com/YOUR_HANDLE", "_blank"),
+                      label: "Instagram"
+                    },
+                    {
+                      icon: <ReadCvLogoIcon size={20} />,
+                      action: () => window.open("/resume.pdf", "_blank"),
+                      label: "Resume"
+                    },
+                    {
+                      icon: <GithubLogoIcon size={20} />,
+                      action: () => window.open("https://github.com/PabloAlmanza47", "_blank"),
+                      label: "GitHub"
+                    }
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      title={item.label}
+                      onClick={item.action}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.08 }}
+                      className="text-gray-300 hover:text-blue-400 cursor-pointer transition duration-200"
+                    >
+                      {item.icon}
+                    </motion.div>
+                  ))}
+                </div>  
               </div>
             </div>
           </div>
-        </div>   
+        </div>  
       </motion.div>
     </div>
   );

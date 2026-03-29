@@ -150,8 +150,10 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
           break;
         }
 
-        openWindow(arg);
         addHistory(cmd, [`Opening ${arg} window...`]);
+
+        setTimeout(() => {openWindow(arg);}, 500)
+
         break;
 
       case "cd": {
