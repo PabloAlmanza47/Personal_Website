@@ -7,6 +7,7 @@ import MusicWindow from "../../components/MusicWindow";
 import Terminal from "../../components/Terminal";
 import { useState } from "react";
 import {AnimatePresence} from "framer-motion"
+import Test from "../../components/test";
 
 export default function Home() {
   type WindowType = {

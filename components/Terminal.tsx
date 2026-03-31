@@ -269,7 +269,6 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
         dragListener={false}
         dragMomentum={false}
         dragElastic={0}
-        whileDrag={{ scale: 1.05 }}
         dragConstraints={containerRef}
         initial={{ scale: 0.65, opacity: 0, y: 40 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
