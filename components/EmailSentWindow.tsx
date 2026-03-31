@@ -34,14 +34,14 @@ export default function EmailSentWindow({ onClose, zIndex, bringToFront }: Email
 
           {/* Top Bar */}
           <div onPointerDown={(e) => {bringToFront(); dragControls.start(e);}} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
-            <div className="absolute left-0 flex">
+            <div className="absolute flex">
               <button aria-label="Close window" className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={onClose}/>
             </div>
             <h3 className="absolute left-1/2 text-[10px] -translate-x-1/2 text-white/60 h-full flex justify-center items-center"> success! </h3>
           </div>
 
           {/* content */}
-          <div className="flex flex-col px-2 py-1 bg h-full">
+          <div className="flex flex-col px-2 py-1 flex-1">
             <div className="w-full h-1/2 text-[10px] flex justify-center items-end text-blue-400">
               <ShootingStarIcon size={30}/>
             </div>

@@ -16,6 +16,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
   const containerRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
   const [showEmailWindow, setShowEmailWindow] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   //email back end
   const [name, setName] = useState("");
@@ -78,10 +79,17 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
         initial={{ scale: 0.65, opacity: 0, y: 40 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.15, opacity: 0, y: 40 }}
-        className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-215 h-97 flex flex-row gap-1"
+        className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-auto h-97 flex flex-row gap-1"
       >
+        <motion.div
+          className="flex flex-row gap-1 z-20"
+          initial={false}
+          animate={{ width: showEmailWindow ? 528 + 324 + 8 : 528 }}
+          transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}        
+        >
+        
         {/* Main window */}
-        <div className="bg-gray-950 h-full w-132 p-1 rounded-lg">
+        <div className="bg-gray-950 h-full w-132 p-1 rounded-lg shrink-0">
           <div className="bg-gray-950 w-full h-full outline-2 outline-gray-500 rounded-sm flex flex-col">
             {/* Top Bar */}
             <div
@@ -234,9 +242,22 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
                 </div>
 
                 {/* Content */}
-                <div className="p-2 font-mono text-xs flex flex-col gap-2 flex-1">
-                  <div className="">
-                    <span className="">Work Email</span> <span className="">pabloalmanza3247@gmail.com</span>
+                <div className="p-2 font-mono text-[9px] flex flex-col gap-2 flex-1">
+                  <div className="relative flex">
+                    <span className="">Work Email:</span> 
+                    <span 
+                      className="cursor-pointer text-blue-400 hover:underline ml-1" 
+                      onClick={() => {
+                        navigator.clipboard.writeText("pabloalmanza3247@gmail.com");
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 800);
+                      }}
+                    >
+                      pabloalmanza3247@gmail.com
+                    </span>
+                    {copied && (
+                      <span className=" ml-1 text-[9px] text-blue-500">copied!</span>
+                    )}
                   </div>
                   
                   <input
@@ -280,7 +301,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
           )}
         </AnimatePresence>
 
-
+        </motion.div>
       </motion.div>
     </div>
   );
