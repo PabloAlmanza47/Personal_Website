@@ -290,7 +290,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
               <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
               <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
             </div>
-            <h1 className="absolute left-1/2 text-xs -translate-x-1/2 text-white/60">
+            <h1 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
               {'>'} Terminal_
             </h1>
           </div>

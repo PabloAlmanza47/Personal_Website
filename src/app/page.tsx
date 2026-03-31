@@ -7,7 +7,10 @@ import MusicWindow from "../../components/MusicWindow";
 import Terminal from "../../components/Terminal";
 import { useState } from "react";
 import {AnimatePresence} from "framer-motion"
-import Test from "../../components/test";
+import EmailSentWindow from "../../components/EmailSentWindow";
+
+
+
 
 export default function Home() {
   type WindowType = {
@@ -90,6 +93,17 @@ export default function Home() {
                   zIndex={win.z}
                   bringToFront={() => bringToFront(win.id)}
                   onClose={() => closeWindow(win.id)}
+                  onEmailSent={() => openWindow("emailSent")}
+                />
+              );
+              
+            case "emailSent":
+              return (
+                <EmailSentWindow
+                  key={win.id}
+                  zIndex={win.z}
+                  bringToFront={() => bringToFront(win.id)}
+                  onClose={() => closeWindow(win.id)}
                 />
               );
               
@@ -117,6 +131,7 @@ export default function Home() {
               return null;
           }
         })}
+
       </AnimatePresence>
     </main>
   );
