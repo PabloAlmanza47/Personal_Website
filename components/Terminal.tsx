@@ -72,7 +72,6 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-
   type Line = {
     type: "command" | "output";
     text: string;

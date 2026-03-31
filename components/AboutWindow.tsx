@@ -4,6 +4,7 @@ import { motion, useDragControls, AnimatePresence } from "framer-motion";
 import pabloAscii from "../ascii/pabloAscii";
 import pabloName from "../ascii/pabloName";
 import { ReadCvLogoIcon, GithubLogoIcon, EnvelopeSimpleIcon, InstagramLogoIcon, LinkedinLogoIcon} from "@phosphor-icons/react";
+import Link from "next/link";
 
 interface AboutWindowProps {
   onClose: () => void;
@@ -15,6 +16,50 @@ export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWind
   const containerRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
   const [showEmailWindow, setShowEmailWindow] = useState(false);
+  //email back end
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+
+  //sending email function
+  const handleSend = async () => {
+    if (!name || !email || !message) {
+      alert("fill required fields");
+      return;
+    }
+
+    setSending(true);
+
+    try {
+      await fetch("https://hook.us2.make.com/2uoju11xfitvznsapc5yjwa4yxh36xfd", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message,
+        }),
+      });
+
+      // reset form
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+
+      alert("message sent");
+    } catch (err) {
+      console.error(err);
+      alert("failed to send");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div ref={containerRef} style={{ zIndex }} className="fixed inset-0 pointer-events-none">
@@ -162,11 +207,11 @@ export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWind
           <AnimatePresence>
             {showEmailWindow && (
               <motion.div
-                initial={{ x: -40, opacity: 1 }}
+                initial={{ x: -330, opacity: 1 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -40, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="bg-gray-950 p-1 rounded-lg"
+                exit={{ x: -330, opacity: 1 }}
+                transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}
+                className="bg-gray-950 p-1 rounded-lg -z-10"
               >
                 <div className="bg-gray-950 w-80 h-full outline-2 outline-gray-500 rounded-sm flex flex-col">
 
@@ -176,34 +221,55 @@ export default function AboutWindow({ onClose, zIndex, bringToFront }: AboutWind
                     className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing flex justify-between"
                   >
                     <span className="text-[10px] text-white/60 ml-1">
-                      {'>'} mail<span className="animate-pulse">_</span>
+                      {'>'} contact<span className="animate-pulse">_</span>
                     </span>
                     <button
                       aria-label="Close window"
                       className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tr-sm"
-                      onClick={onClose}
+                      onClick={() => setShowEmailWindow(false)}
                     />
                   </div>
 
                   {/* Content */}
                   <div className="p-2 font-mono text-xs flex flex-col gap-2 flex-1">
+                    <div className="">
+                      <span className="">Work Email</span> <span className="">pabloalmanza3247@gmail.com</span>
+                    </div>
+                    
                     <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       className="bg-black border border-gray-700 px-1 py-0.5"
-                      placeholder="to:"
+                      placeholder="your name:"
                     />
+
                     <input
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="bg-black border border-gray-700 px-1 py-0.5"
+                      placeholder="your email:"
+                    />
+
+                    <input
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
                       className="bg-black border border-gray-700 px-1 py-0.5"
                       placeholder="subject:"
                     />
+
                     <textarea
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
                       className="bg-black border border-gray-700 px-1 py-0.5 flex-1 resize-none"
                       placeholder="message..."
                     />
+                    
                     <button
-                      className="bg-blue-600 hover:bg-blue-500 px-2 py-1"
-                      onClick={() => window.location.href = "mailto:pabloalmanza3247@example.com"}
+                      className="bg-blue-600 hover:bg-blue-500 px-2 py-1 disabled:opacity-50"
+                      onClick={handleSend}
+                      disabled={sending}
                     >
-                      send
+                      {sending ? "sending..." : "send"}
                     </button>
                   </div>
                 </div>
