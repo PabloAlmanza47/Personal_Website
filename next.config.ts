@@ -1,11 +1,12 @@
+import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   turbopack: {
-    root: 'C:/Users/pablo/OneDrive/Desktop/pablos_website'
-  }
+    // Use relative path to project root
+    root: path.resolve(__dirname),
+  },
 };
 
 export default nextConfig;
