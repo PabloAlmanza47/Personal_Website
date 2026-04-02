@@ -297,7 +297,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
 
           {/* Terminal Body */}
           <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
-            {/* Bott content */}
+            {/* Bootup content */}
             <div className="flex flex-col">
               <pre
                   className="whitespace-pre select-none text-white"

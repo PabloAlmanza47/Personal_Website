@@ -77,7 +77,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
         dragElastic={0}
         dragConstraints={containerRef}
         initial={{ scale: 0.65, opacity: 0, y: 40 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
+        animate={{ scale: 1, opacity: 1, y: 30, x:15 }}
         exit={{ scale: 0.15, opacity: 0, y: 40 }}
         className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-auto h-97 flex flex-row gap-1"
       >
@@ -114,7 +114,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
             <div className="flex flex-col flex-1 px-2 py-1 gap-1">
               <div className="text-xs font-mono text-gray-300">
                 <span>pablo</span>
-                <span className="text-blue-700">@portfolio</span>
+                <span className="text-blue-700">@term.portfolio</span>
                 <span>:aboutMe/info$ </span>
               </div>
 
@@ -263,33 +263,33 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="bg-black border border-gray-700 px-1 py-0.5"
+                    className="bg-black border border-gray-700 px-1 py-0.5 rounded-sm"
                     placeholder="your name:"
                   />
 
                   <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="bg-black border border-gray-700 px-1 py-0.5"
+                    className="bg-black border border-gray-700 px-1 py-0.5 rounded-sm"
                     placeholder="your email:"
                   />
 
                   <input
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="bg-black border border-gray-700 px-1 py-0.5"
+                    className="bg-black border border-gray-700 px-1 py-0.5 rounded-sm"
                     placeholder="subject:"
                   />
 
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="bg-black border border-gray-700 px-1 py-0.5 flex-1 resize-none"
+                    className="bg-black border border-gray-700 px-1 py-0.5 flex-1 resize-none rounded-sm"
                     placeholder="message..."
                   />
 
                   <button
-                    className="bg-blue-600 hover:bg-blue-500 px-2 py-1 disabled:opacity-50"
+                    className="bg-blue-700 hover:bg-blue-600 px-2 py-1 disabled:opacity-50 rounded-sm font-mono"
                     onClick={handleSend}
                     disabled={status === "sending"}
                   >

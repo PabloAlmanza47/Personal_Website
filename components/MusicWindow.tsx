@@ -45,7 +45,7 @@ export default function MusicWindow({ onClose, zIndex, bringToFront }: MusicWind
           <div className="flex flex-col flex-1 gap-1 px-2 py-1">
             {/*header*/}
             <div className="text-xs font-mono text-gray-300">
-              <span>pablo</span><span className="text-blue-700">@portfolio</span><span>:music/info$ </span>
+              <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:music/info$ </span>
             </div>
             <div className="flex-1">
               <CurrentlyPlaying />
