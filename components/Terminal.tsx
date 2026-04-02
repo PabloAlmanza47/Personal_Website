@@ -309,7 +309,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
                   }}
               >{welcomeAscii}
               </pre>
-              <div className="font-mono text-xs flex flex-col">
+              <div className="font-mono text-xs flex flex-col text-white">
                 <div>
                   <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
                 </div>
