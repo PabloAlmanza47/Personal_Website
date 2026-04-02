@@ -51,78 +51,78 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
             </div>
 
             {/* True window content */}
-            <div className="flex flex-col bg-gray-400 gap-2">
+            <div className="flex flex-col gap-2">
               {/* Projects */}
-              <div className="bg-gray-900 h-full w-full flex flex-col gap-2">
+              <div className="h-full w-full flex flex-col gap-2">
 
-                <div className="text-[9px] font-mono bg-gray-800 flex flex-col">
+                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
                   <Link href={"https://tamushpe.org/"} target="_blank" className="hover:underline">
                     <h2 className="text-white">TAMU SHPE Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon/><span>TypeScript</span><ArrowUpRightIcon/><span>React</span><ArrowUpRightIcon/><span>Next.js</span><ArrowUpRightIcon/>
+                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
                   </div>
-                  <p className="text-white/50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo consequuntur voluptas magnam quod incidunt dolorum, perferendis ut explicabo omnis corrupti, natus iste ab quidem officiis soluta maiores et earum a?</p>
+                  <p className="text-white/50">
+                    Developed and deployed a responsive website for a 200+ member engineering organization. 
+                    Built reusable components using React and TypeScript, improving maintainability and page performance.
+                  </p>
 
                 </div>
 
-                <div className="text-[9px] font-mono bg-gray-800 flex flex-col">
+                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
                   <Link href={"https://tamucolorstack.com/"} target="_blank" className="hover:underline">
                     <h2 className="text-white">ColorStack Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon/><span>TypeScript</span><ArrowUpRightIcon/><span>React</span><ArrowUpRightIcon/><span>Next.js</span><ArrowUpRightIcon/>
+                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
                   </div>
-                  <p className="text-white/50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo consequuntur voluptas magnam quod incidunt dolorum, perferendis ut explicabo omnis corrupti, natus iste ab quidem officiis soluta maiores et earum a?</p>
+                  <p className="text-white/50">
+                    Contributed to the development of a modern organization website, focusing on clean UI and responsive design. 
+                    Collaborated with a team using Git and GitHub to ship production-ready features.
+                  </p>
 
                 </div>
 
-                <div className="text-[9px] font-mono bg-gray-800 flex flex-col">
+                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
 
                   <Link href={{/* inset website link after this is done*/}} target="_blank" className="hover:underline">
                     <h2 className="text-white">Personal Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon/><span>TypeScript</span><ArrowUpRightIcon/><span>React</span><ArrowUpRightIcon/><span>Next.js</span><ArrowUpRightIcon/>
+                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
                   </div>
-                  <p className="text-white/50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo consequuntur voluptas magnam quod incidunt dolorum, perferendis ut explicabo omnis corrupti, natus iste ab quidem officiis soluta maiores et earum a?</p>
+                  <p className="text-white/50">
+                    Designed and built a terminal-inspired portfolio using Next.js and Framer Motion. 
+                    Implemented draggable window components and dynamic UI interactions to create a unique user experience.
+                  </p>
 
                 </div>
 
-                <div className="text-[9px] font-mono bg-gray-800 flex flex-col">
+                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
 
                   <Link href={"https://github.com/PabloAlmanza47/Tree_Chop_Mania"} target="_blank" className="hover:underline">
                     <h2 className="text-white">Tree Chop Mania</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>Python</span><ArrowUpRightIcon/><span>Git/GitHub</span><ArrowUpRightIcon/>
+                    <span>Python</span><ArrowUpRightIcon size={11}/><span>Git/GitHub</span><ArrowUpRightIcon size={11}/>
                   </div>
-                  <p className="text-white/50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo consequuntur voluptas magnam quod incidunt dolorum, perferendis ut explicabo omnis corrupti, natus iste ab quidem officiis soluta maiores et earum a?</p>
+                  <p className="text-white/50">
+                    Built a simple game using Python, implementing core game logic and user interaction. 
+                    Practiced problem-solving and control flow while managing game state and input handling.
+                  </p>
 
                 </div>
 
               </div>
             
               {/* Extra Information */}
-              <div className="bg-gray-900 text-[9px] font-mono flex flex-col gap-2 p-2">
-                <h3 className="text-white/70">Current Tools</h3>
-
-                <div className="flex flex-col gap-1">
-                  <div className="flex">
-                    <span>Terminal:</span>
-                    <span>Ghostty</span>
-                  </div>
-
-                  <div className="flex">
-                    <span>IDE:</span>
-                    <span>Neovim</span>
-                  </div>
-
-                  <div className="flex">
-                    <span>OS:</span>
-                    <span>Fedora Linux w/ Hyprland</span>
-                  </div>
-                </div>
+              <div className="text-[9px] font-mono flex flex-col gap-1 pt-2">
+                <h3>Current Tools</h3>
+                <ul>
+                  <li>Terminal: Ghostty</li>
+                  <li>IDE: Neovim</li>
+                  <li>OS: Fedora Linux w/ Hyprland</li>
+                </ul>
               </div>
             </div>
           </div>
