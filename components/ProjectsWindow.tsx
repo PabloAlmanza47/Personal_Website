@@ -38,7 +38,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
               <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200" />
               <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200" />
             </div>
-            <h1 className="absolute left-1/2 text-xs -translate-x-1/2 text-white/60"> {'>'} Projects_ </h1>
+            <h1 className="absolute left-1/2 text-[10px] -translate-x-1/2 text-white/60 h-full flex justify-center items-center"> {'>'} Projects_ </h1>
           </div>
 
           {/* Content */}
