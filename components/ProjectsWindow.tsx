@@ -55,12 +55,29 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
               {/* Projects */}
               <div className="h-full w-full flex flex-col gap-2">
 
-                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
-                  <Link href={"https://tamushpe.org/"} target="_blank" className="hover:underline">
+                <div className="text-[9px] font-mono transition-color duration-150 flex flex-col">
+                  <Link href={"https://tamushpe.org/"} target="_blank" className="hover:underline w-fit">
                     <h2 className="text-white">TAMU SHPE Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
+
+                    <ul className="flex gap-1">
+                      {[
+                        { name: "TailwindCSS", url: "https://tailwindcss.com" },
+                        { name: "TypeScript", url: "https://www.typescriptlang.org" },
+                        { name: "React", url: "https://react.dev" },
+                        { name: "Next.js", url: "https://nextjs.org" },
+                      ].map((tech) => (
+                        <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                          <div className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                          <Link href={tech.url} target="_blank" className="relative z-10 flex gap-1 items-center">
+                            <span>{tech.name}</span>
+                            <ArrowUpRightIcon size={11} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+
                   </div>
                   <p className="text-white/50">
                     Developed and deployed a responsive website for a 200+ member engineering organization. 
@@ -69,12 +86,29 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
 
                 </div>
 
-                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
-                  <Link href={"https://tamucolorstack.com/"} target="_blank" className="hover:underline">
+                <div className="text-[9px] font-mono transition-color duration-150 flex flex-col">
+                  <Link href={"https://tamucolorstack.com/"} target="_blank" className="hover:underline w-fit">
                     <h2 className="text-white">ColorStack Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
+
+                    <ul className="flex gap-1">
+                      {[
+                        { name: "TailwindCSS", url: "https://tailwindcss.com" },
+                        { name: "TypeScript", url: "https://www.typescriptlang.org" },
+                        { name: "React", url: "https://react.dev" },
+                        { name: "Next.js", url: "https://nextjs.org" },
+                      ].map((tech) => (
+                        <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                          <div className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                          <Link href={tech.url} target="_blank" className="relative z-10 flex gap-1 items-center">
+                            <span>{tech.name}</span>
+                            <ArrowUpRightIcon size={11} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+
                   </div>
                   <p className="text-white/50">
                     Contributed to the development of a modern organization website, focusing on clean UI and responsive design. 
@@ -83,13 +117,30 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
 
                 </div>
 
-                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
+                <div className="text-[9px] font-mono transition-color duration-150 flex flex-col">
 
-                  <Link href={{/* inset website link after this is done*/}} target="_blank" className="hover:underline">
+                  <Link href={"https://pablosweb.netlify.app/"} target="_blank" className="hover:underline w-fit">
                     <h2 className="text-white">Personal Website</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>TailwindCSS</span><ArrowUpRightIcon size={11}/><span>TypeScript</span><ArrowUpRightIcon size={11}/><span>React</span><ArrowUpRightIcon size={11}/><span>Next.js</span><ArrowUpRightIcon size={11}/>
+
+                    <ul className="flex gap-1">
+                      {[
+                        { name: "TailwindCSS", url: "https://tailwindcss.com" },
+                        { name: "Netlify", url: "https://www.netlify.com" },
+                        { name: "Framer Motion", url: "https://www.framer.com/motion" },
+                        { name: "Next.js", url: "https://nextjs.org" },
+                      ].map((tech) => (
+                        <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                          <div className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                          <Link href={tech.url} target="_blank" className="relative z-10 flex gap-1 items-center">
+                            <span>{tech.name}</span>
+                            <ArrowUpRightIcon size={11} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+
                   </div>
                   <p className="text-white/50">
                     Designed and built a terminal-inspired portfolio using Next.js and Framer Motion. 
@@ -98,13 +149,28 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
 
                 </div>
 
-                <div className="text-[9px] font-mono hover:bg-gray-800 transition-color duration-150 flex flex-col">
+                <div className="text-[9px] font-mono transition-color duration-150 flex flex-col">
 
-                  <Link href={"https://github.com/PabloAlmanza47/Tree_Chop_Mania"} target="_blank" className="hover:underline">
+                  <Link href={"https://github.com/PabloAlmanza47/Tree_Chop_Mania"} target="_blank" className="hover:underline w-fit">
                     <h2 className="text-white">Tree Chop Mania</h2>
                   </Link>
                   <div className="flex gap-1 font-thin italic text-white">
-                    <span>Python</span><ArrowUpRightIcon size={11}/><span>Git/GitHub</span><ArrowUpRightIcon size={11}/>
+
+                    <ul className="flex gap-1">
+                      {[
+                        { name: "Python", url: "https://www.python.org" },
+                        { name: "Git/GitHub", url: "https://www.github.com" }
+                      ].map((tech) => (
+                        <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                          <div className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                          <Link href={tech.url} target="_blank" className="relative z-10 flex gap-1 items-center">
+                            <span>{tech.name}</span>
+                            <ArrowUpRightIcon size={11} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+
                   </div>
                   <p className="text-white/50">
                     Built a simple game using Python, implementing core game logic and user interaction. 
@@ -121,7 +187,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
                 <ul>
                   <li>Terminal: Ghostty</li>
                   <li>IDE: Neovim</li>
-                  <li>OS: Fedora Linux w/ Hyprland</li>
+                  <li>OS: Arch Linux w/ Hyprland</li>
                 </ul>
               </div>
             </div>
