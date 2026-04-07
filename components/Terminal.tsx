@@ -116,7 +116,11 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
       case "help":
         addHistory(cmd, [
           "Available commands:",
-          "ls, cd <folder>, cat <file>, clear / cls"
+          "  ls        - List files and folders in the current directory",
+          "  cd <dir>  - Change directory to <dir>",
+          "  cat <file> - Display the contents of <file>",
+          "  open <file> - Open a file in a new window (e.g. open about)",
+          "  clear / cls - Clear the terminal screen"
         ]);
         break;
 
@@ -328,7 +332,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
                 );
               }
               return (
-                <div key={i} className="text-cyan-700">
+                <div key={i} className="text-cyan-800">
                   {line.text}
                 </div>
               );
