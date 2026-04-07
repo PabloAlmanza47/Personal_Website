@@ -97,7 +97,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
                         { name: "TailwindCSS", url: "https://tailwindcss.com" },
                         { name: "TypeScript", url: "https://www.typescriptlang.org" },
                         { name: "React", url: "https://react.dev" },
-                        { name: "Next.js", url: "https://nextjs.org" },
+                        { name: "Figma", url: "https://www.figma.com" },
                       ].map((tech) => (
                         <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
                           <div className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
@@ -180,14 +180,20 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
                 </div>
 
               </div>
-            
+                      
               {/* Extra Information */}
               <div className="text-[9px] font-mono flex flex-col gap-1 pt-2">
-                <h3>Current Tools</h3>
-                <ul>
-                  <li>Terminal: Ghostty</li>
-                  <li>IDE: Neovim</li>
-                  <li>OS: Arch Linux w/ Hyprland</li>
+                <h3 className="">Current Tools</h3>
+                <ul className="flex flex-col gap-1 ml-2">
+                  <li>
+                    <span className="text-gray-400">Terminal:</span> Ghostty
+                  </li>
+                  <li>
+                    <span className="text-gray-400">IDE:</span> Neovim w/ Tmux
+                  </li>
+                  <li>
+                    <span className="text-gray-400">OS:</span> Arch Linux w/ Hyprland
+                  </li>
                 </ul>
               </div>
             </div>

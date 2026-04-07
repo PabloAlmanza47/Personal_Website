@@ -19,9 +19,7 @@ export default function Home() {
     z: number;
   };
 
-  const [openWindows, setOpenWindows] = useState<WindowType[]>([
-    { id: crypto.randomUUID(), name: "terminal", z: 1 }
-  ]);
+  const [openWindows, setOpenWindows] = useState<WindowType[]>([]);
 
   const [topZ, setTopZ] = useState(1);
 
