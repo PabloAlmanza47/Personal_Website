@@ -146,7 +146,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
           break;
         }
 
-        const validWindows = ["about", "projects", "music", "terminal"];
+        const validWindows = ["about", "projects", "music", "terminal", "experience"];
 
         if (!validWindows.includes(arg)) {
           addHistory(cmd, [`Window '${arg}' not found`]);
