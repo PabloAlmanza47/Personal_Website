@@ -67,6 +67,19 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   const [currentDir, setCurrentDir] = useState("~");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
+  const [showFuzzyFinder, setShowFuzzyFinder] = useState(false);
+  
+  // 🔥 Shift + F toggle
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key.toLowerCase() === "f") {
+        setShowFuzzyFinder(prev => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   //command history
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -262,11 +275,9 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
 
   return (
     <div ref={containerRef} style={{zIndex}} className="fixed inset-0 pointer-events-none">
+      {/* Main window container that will be resizing and holding both the terminal and the fuzzy finder */}
       <motion.div
-        onMouseDown={(e) => {
-          e.stopPropagation();
-          bringToFront();
-        }}
+        onMouseDown={bringToFront}
         drag
         dragControls={DragControls}
         dragListener={false}
@@ -274,84 +285,131 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
         dragElastic={0}
         dragConstraints={containerRef}
         initial={{ scale: 0.65, opacity: 0, y: 40 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
+        animate={{ scale: 1, opacity: 1, y: 0}}
         exit={{ scale: 0.15, opacity: 0, y: 40 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg pointer-events-auto"
+        className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg w-auto h-97 flex flex-row gap-1"
       >
-        <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col">
-
-          {/* Top Bar */}
-          <div
-            onPointerDown={(e) => {
-              bringToFront();
-              DragControls.start(e)}}
-            className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing"
-          >
-            <div className="absolute left-0 flex">
-              <button
-                aria-label="Close window"
-                className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={() => {playClick(); onClose();}}></button>
-              <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
-              <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
-            </div>
-            <h1 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
-              {'>'} Terminal_
-            </h1>
-          </div>
-
-          {/* Terminal Body */}
-          <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
-            {/* Bootup content */}
-            <div className="flex flex-col">
-              <pre
-                  className="whitespace-pre select-none text-white"
-                  style={{
-                    fontFamily: "Cascadia Code, Consolas, monospace",
-                    fontVariantLigatures: "none",
-                    fontSize: "11px",
-                    lineHeight: "1"
-                  }}
-              >{welcomeAscii}
-              </pre>
-              <div className="font-mono text-xs flex flex-col text-white">
-                <div>
-                  <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
+        <motion.div
+          className="flex flex-row gap-1 z-20"
+          initial={false}
+          animate={{ width: showFuzzyFinder ? 528 + 324 + 8 : 528 }}
+          transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}        
+        >
+          {/* Main window */}
+          <div className="bg-gray-950 h-full w-132 p-1 rounded-lg shrink-0">
+            <div className="bg-gray-950 w-130 h-95 outline-2 outline-gray-500 rounded-sm flex flex-col">
+              {/* Top Bar */}
+              <div
+                onPointerDown={(e) => {
+                  bringToFront();
+                  DragControls.start(e)}}
+                className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing"
+              >
+                <div className="absolute left-0 flex">
+                  <button
+                    aria-label="Close window"
+                    className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={() => {playClick(); onClose();}}></button>
+                  <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200"></button>
+                  <button className="bg-gray-600 w-5 h-2 hover:h-4 transition-all duration-200"></button>
                 </div>
-                <span>----------------------------------------------------------------------</span>
+                <h1 className="absolute left-1/2 text-[10px] -translate-x-1/2 text-white/60 h-full flex justify-center items-center">
+                  {'>'} Terminal_
+                </h1>
+              </div>
+
+              {/* Terminal Body */}
+              <div onClick={() => inputRef.current?.focus()} className="flex flex-col flex-1 bg-gray-950 font-mono text-xs p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent scroll-smooth">
+                {/* Bootup content */}
+                <div className="flex flex-col">
+                  <pre
+                      className="whitespace-pre select-none text-white"
+                      style={{
+                        fontFamily: "Cascadia Code, Consolas, monospace",
+                        fontVariantLigatures: "none",
+                        fontSize: "11px",
+                        lineHeight: "1"
+                      }}
+                  >{welcomeAscii}
+                  </pre>
+                  <div className="font-mono text-xs flex flex-col text-white">
+                    <div>
+                      <span>Type</span><span className="text-blue-700"> help </span><span> for a list of supported commands.</span>
+                    </div>
+                    <span>----------------------------------------------------------------------</span>
+                  </div>
+                </div>
+
+                {/* Command History */}
+                {history.map((line, i) => {
+                  if (line.type === "command") {
+                    return (
+                      <div key={i}>
+                        <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{line.dir}$ </span>
+                        <span className="text-gray-600">{line.text}</span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={i} className="text-cyan-800">
+                      {line.text}
+                    </div>
+                  );
+                })}
+
+                {/* Current Input */}
+                <div className="flex">
+                  <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{currentDir}$</span>
+                  <div
+                    ref={inputRef}
+                    contentEditable
+                    suppressContentEditableWarning
+                    onKeyDown={handleKeyDown}
+                    className="outline-none flex-1 text-green-300"
+                  /> 
+                </div>
+                <div ref={bottomRef}></div>
               </div>
             </div>
-
-            {/* Command History */}
-            {history.map((line, i) => {
-              if (line.type === "command") {
-                return (
-                  <div key={i}>
-                    <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{line.dir}$ </span>
-                    <span className="text-gray-600">{line.text}</span>
-                  </div>
-                );
-              }
-              return (
-                <div key={i} className="text-cyan-800">
-                  {line.text}
-                </div>
-              );
-            })}
-
-            {/* Current Input */}
-            <div className="flex">
-              <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:{currentDir}$</span>
-              <div
-                ref={inputRef}
-                contentEditable
-                suppressContentEditableWarning
-                onKeyDown={handleKeyDown}
-                className="outline-none flex-1 text-green-300"
-              /> 
-            </div>
-            <div ref={bottomRef}></div>
           </div>
-        </div>
+
+          {/* Fuzzy Finder */}
+          <AnimatePresence>
+            {showFuzzyFinder && (
+              <motion.div
+              initial={{ x: -330}}
+              animate={{ x: 0}}
+              exit={{ x: -350}}
+              transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}
+              className="bg-gray-950 p-1 rounded-lg -z-10"
+            >
+              <div className="bg-gray-950 w-72 h-full outline-2 outline-gray-500 rounded-sm flex flex-col">
+                {/* Top Bar */}
+                <div
+                  onPointerDown={(e) => { bringToFront(); DragControls.start(e); }}
+                  className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing flex justify-between"
+                >
+                  <h2 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
+                    {'>'} contact_
+                  </h2>
+                  <button
+                    aria-label="Close window"
+                    className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tr-sm"
+                    onClick={() => setShowFuzzyFinder(false)}
+                  />
+                </div>
+
+                {/* Side Content */}
+                <div className="p-2 text-xs font-mono text-white flex flex-col gap-2">
+                  <p>🚧 Work in progress</p>
+                </div>
+
+                </div>
+            </motion.div>
+            )}
+          </AnimatePresence>
+
+
+        </motion.div>
       </motion.div>
     </div>
   );

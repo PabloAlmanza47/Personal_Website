@@ -8,10 +8,10 @@ import Terminal from "../../components/Terminal";
 import { useState } from "react";
 import {AnimatePresence} from "framer-motion"
 import EmailSentWindow from "../../components/EmailSentWindow";
-import Testing from "../../components/testing";
 import Experience from "../../components/Experience";
 
-
+//one of the button on the top of the windows, will make the screen full screen meaning that it will show a true porfolio that has all of the information
+//on one page that can be scrolled through
 
 export default function Home() {
   type WindowType = {
@@ -68,7 +68,6 @@ export default function Home() {
   return (
     <main className="bg-gray-900 font-bold flex justify-center items-center h-screen relative">
       <MenuBar/>
-      <Testing/>
       <div className="bg-white/10 w-12 h-12 absolute bottom-4 p-1 rounded-full hover:w-20 transition-all duration-400 shadow-md shadow-black ease-in-out">
         <button className="bg-black w-full h-full rounded-full outline outline-white text-gray-500 text-center hover:text-white transition-all duration-200" onClick={() => openWindow("terminal")}>{"</>"} </button>    
       </div>

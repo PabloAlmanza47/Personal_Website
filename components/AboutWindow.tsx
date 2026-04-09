@@ -14,7 +14,7 @@ interface AboutWindowProps {
 
 export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent }: AboutWindowProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const dragControls = useDragControls();
+  const DragControls = useDragControls();
   const [showEmailWindow, setShowEmailWindow] = useState(false);
   const [copied, setCopied] = useState(false);
   
@@ -71,7 +71,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
       <motion.div
         onMouseDown={bringToFront}
         drag
-        dragControls={dragControls}
+        dragControls={DragControls}
         dragListener={false}
         dragMomentum={false}
         dragElastic={0}
@@ -87,13 +87,12 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
           animate={{ width: showEmailWindow ? 528 + 324 + 8 : 528 }}
           transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}        
         >
-        
         {/* Main window */}
         <div className="bg-gray-950 h-full w-132 p-1 rounded-lg shrink-0">
           <div className="bg-gray-950 w-full h-full outline-2 outline-gray-500 rounded-sm flex flex-col">
             {/* Top Bar */}
             <div
-              onPointerDown={(e) => { bringToFront(); dragControls.start(e); }}
+              onPointerDown={(e) => { bringToFront(); DragControls.start(e); }}
               className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing"
             >
               <div className="absolute left-0 flex">
@@ -218,9 +217,9 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
         <AnimatePresence>
           {showEmailWindow && (
             <motion.div
-              initial={{ x: -330, opacity: 1 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -350, opacity: 1 }}
+              initial={{ x: -330}}
+              animate={{ x: 0}}
+              exit={{ x: -350}}
               transition={{ type: "tween", duration: 0.25,  ease: [0.22, 1, 0.36, 1]}}
               className="bg-gray-950 p-1 rounded-lg -z-10"
             >
@@ -228,7 +227,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
 
                 {/* Top Bar */}
                 <div
-                  onPointerDown={(e) => { bringToFront(); dragControls.start(e); }}
+                  onPointerDown={(e) => { bringToFront(); DragControls.start(e); }}
                   className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing flex justify-between"
                 >
                   <h2 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
@@ -300,6 +299,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
             </motion.div>
           )}
         </AnimatePresence>
+
 
         </motion.div>
       </motion.div>

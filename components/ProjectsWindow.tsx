@@ -25,7 +25,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
         dragElastic={0}
         dragConstraints={containerRef} 
         initial={{ scale: 0.65, opacity: 0, y: 40 }} 
-        animate={{ scale: 1, opacity: 1, y: 30, x:15 }} 
+        animate={{ scale: 1, opacity: 1, y: 45, x:15 }} 
         exit={{ scale: 0.15, opacity: 0, y: 40 }} 
         className="absolute pointer-events-auto top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-950 p-1 rounded-lg"
       >
