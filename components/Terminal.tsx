@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useDragControls } from "framer-motion"
 import welcomeAscii from "../ascii/welcomeAscii";
 import useSound from "use-sound";
+import FuzzyFinder from "./FuzzyFinder";
 
 
 type TerminalPrompts = {
@@ -69,11 +70,15 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
   const inputRef = useRef<HTMLDivElement>(null);
   const [showFuzzyFinder, setShowFuzzyFinder] = useState(false);
   
-  // 🔥 Shift + F toggle
+  // Fuzzy Finder
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.shiftKey && e.key.toLowerCase() === "f") {
-        setShowFuzzyFinder(prev => !prev);
+        e.preventDefault();
+        setShowFuzzyFinder(prev => {
+          if (prev) setTimeout(() => inputRef.current?.focus(), 50);
+          return !prev;
+        });      
       }
     };
 
@@ -159,7 +164,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
           break;
         }
 
-        const validWindows = ["about", "projects", "music", "terminal", "experience"];
+        const validWindows = ["about", "projects", "music", "experience"];
 
         if (!validWindows.includes(arg)) {
           addHistory(cmd, [`Window '${arg}' not found`]);
@@ -391,16 +396,12 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
                   <h2 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
                     {'>'} contact_
                   </h2>
-                  <button
-                    aria-label="Close window"
-                    className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tr-sm"
-                    onClick={() => setShowFuzzyFinder(false)}
-                  />
                 </div>
+                
 
                 {/* Side Content */}
                 <div className="p-2 text-xs font-mono text-white flex flex-col gap-2">
-                  <p>🚧 Work in progress</p>
+                  <FuzzyFinder openWindow={openWindow} onClose={() => {setShowFuzzyFinder(false); setTimeout(() => inputRef.current?.focus(), 50);}}/>
                 </div>
 
                 </div>

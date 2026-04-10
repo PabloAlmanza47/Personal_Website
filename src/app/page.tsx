@@ -9,6 +9,7 @@ import { useState } from "react";
 import {AnimatePresence} from "framer-motion"
 import EmailSentWindow from "../../components/EmailSentWindow";
 import Experience from "../../components/Experience";
+import FuzzyFinder from "../../components/FuzzyFinder";
 
 //one of the button on the top of the windows, will make the screen full screen meaning that it will show a true porfolio that has all of the information
 //on one page that can be scrolled through
