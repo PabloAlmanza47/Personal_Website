@@ -138,7 +138,9 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
           "  cd <dir>  - Change directory to <dir>",
           "  cat <file> - Display the contents of <file>",
           "  open <file> - Open a file in a new window (e.g. open about)",
-          "  clear / cls - Clear the terminal screen"
+          "  clear / cls - Clear the terminal screen",
+          "  ",
+          "Tip: press shift+f to open the fuzzy finder"
         ]);
         break;
 
