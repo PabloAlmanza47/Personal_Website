@@ -231,7 +231,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
                   className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing flex justify-between"
                 >
                   <h2 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
-                    {'>'} contact_
+                    {'>'} Contact_
                   </h2>
                   <button
                     aria-label="Close window"

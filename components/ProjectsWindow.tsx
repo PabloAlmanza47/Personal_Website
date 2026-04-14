@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from "react";
-import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import { motion, useDragControls } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
 
@@ -12,14 +12,14 @@ interface MusicWindowProps {
 
 export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicWindowProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const dragControls = useDragControls();
+  const DragControls = useDragControls();
 
   return (
     <div ref={containerRef} style={{ zIndex }} className="fixed inset-0 pointer-events-none">
       <motion.div
         onMouseDown={bringToFront} 
         drag 
-        dragControls={dragControls}
+        dragControls={DragControls}
         dragListener={false}
         dragMomentum={false}
         dragElastic={0}
@@ -32,7 +32,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
         <div className="bg-gray-950 w-130 h-105 outline-2 outline-gray-500 rounded-sm flex flex-col">
 
           {/* Top Bar */}
-          <div onPointerDown={(e) => {bringToFront(); dragControls.start(e);}} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
+          <div onPointerDown={(e) => {bringToFront(); DragControls.start(e);}} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
             <div className="absolute left-0 flex">
               <button aria-label="Close window" className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={onClose}/>
               <button className="bg-blue-700 w-5 h-2 hover:h-4 transition-all duration-200" />
@@ -45,9 +45,7 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: MusicW
           <div className="flex flex-col px-2 py-1 gap-1">
             {/* Header */}
             <div className="text-xs font-mono text-gray-300">
-              <span>pablo</span>
-              <span className="text-blue-700">@term.portfolio</span>
-              <span>:projects/info$ </span>
+              <span>pablo</span><span className="text-blue-700">@term.portfolio</span><span>:projects/info$ </span>
             </div>
 
             {/* True window content */}

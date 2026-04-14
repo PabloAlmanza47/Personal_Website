@@ -396,7 +396,7 @@ export default function Terminal({ openWindow, onClose, zIndex, bringToFront }: 
                   className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing flex justify-between"
                 >
                   <h2 className="text-[10px] text-white/60 ml-1 h-full flex justify-center items-center">
-                    {'>'} contact_
+                    {'>'} Fuzzy Finder_
                   </h2>
                 </div>
                 
