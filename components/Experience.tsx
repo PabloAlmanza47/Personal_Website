@@ -32,7 +32,7 @@ export default function Experience({ zIndex, bringToFront, onClose }: Experience
       >
         <div className="bg-gray-950 w-130 h-105 outline-2 outline-gray-500 rounded-sm flex flex-col">
 
-          {/* Top Bar */}
+          {/* Top Bar */}KO
           <div onPointerDown={(e) => {bringToFront(); DragControls.start(e);}} className="bg-white/10 w-full h-4 relative rounded-t-sm cursor-grab active:cursor-grabbing">
             <div className="absolute left-0 flex">
               <button aria-label="Close window" className="bg-blue-900 w-5 h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-tl-sm" onClick={onClose}/>
