@@ -16,7 +16,7 @@ export default function MusicWindow({ onClose, zIndex, bringToFront }: MusicWind
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      contentClassName="sm:h-97"
+      sizeClassName="sm:w-130 sm:h-97"
       initialOffset={{ x: 15, y: 30 }}
     >
       <div className="flex flex-col flex-1 min-h-0 gap-2 px-3 sm:px-2 py-2 sm:py-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
