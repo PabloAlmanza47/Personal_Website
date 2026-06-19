@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState, useRef } from "react";
 import Equalizer from "./Equalizer";
 import { FastAverageColor } from "fast-average-color";
@@ -18,14 +19,13 @@ export default function CurrentlyPlaying() {
   const displaySong = song?.item || lastSong;
   const currentSongId = useRef<string | null>(null);
 
-  // ✅ SAFE polling (no spam, no leaks)
   useEffect(() => {
     const fac = new FastAverageColor();
     let isMounted = true;
 
     const fetchSong = async () => {
       try {
-        if (document.hidden) return; // ✅ don't fetch if tab inactive
+        if (document.hidden) return;
 
         const res = await fetch("/spotify/currently-playing");
         const data: Song = await res.json();
@@ -34,7 +34,6 @@ export default function CurrentlyPlaying() {
 
         const songId = `${data.item.name}-${data.item.artists.map(a => a.name).join(",")}`;
 
-        // reset progress if new song
         if (songId !== currentSongId.current) {
           setProgress(data.progress_ms ?? 0);
           currentSongId.current = songId;
@@ -43,7 +42,6 @@ export default function CurrentlyPlaying() {
         setSong(data);
         setLastSong(data.item);
 
-        // 🎨 extract album color
         const img = new Image();
         img.crossOrigin = "anonymous";
         img.src = data.item.album.images[0].url;
@@ -57,14 +55,13 @@ export default function CurrentlyPlaying() {
             console.error("Color extraction failed", err);
           }
         };
-
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchSong();
-    const interval = setInterval(fetchSong, 15_000); // ✅ safer interval
+    const interval = setInterval(fetchSong, 15_000);
 
     return () => {
       isMounted = false;
@@ -72,7 +69,6 @@ export default function CurrentlyPlaying() {
     };
   }, []);
 
-  // ✅ smooth progress animation
   useEffect(() => {
     const tickInterval = 50;
     const incrementMs = 60;
@@ -112,29 +108,26 @@ export default function CurrentlyPlaying() {
 
   return (
     <div
-      className="flex flex-col flex-1 h-full justify-between font-mono text-white transition-all duration-500"
+      className="flex flex-col h-full justify-between font-mono text-white transition-all duration-500 rounded-sm p-3 sm:p-0"
       style={{
         color,
         background: `linear-gradient(to bottom, ${color}20, transparent)`,
       }}
     >
-      <div className="flex gap-3 items-center">
-        
-        {/* Album Art */}
+      <div className="flex flex-col sm:flex-row gap-3 items-center sm:items-center text-center sm:text-left">
         <img
           src={displaySong.album.images[0].url}
           alt={displaySong.name}
-          className="w-20 h-20 rounded-md transition-all duration-500"
+          className="w-32 h-32 sm:w-20 sm:h-20 rounded-md transition-all duration-500 object-cover"
           style={{ boxShadow: shadowStyle }}
         />
 
-        {/* Song Info */}
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 min-w-0 w-full">
           <h3 className="text-xs text-gray-400">
             {song?.playing ? "Now Playing" : "Last Played"}
           </h3>
 
-          <p className="text-sm font-semibold truncate text-white">
+          <p className="text-base sm:text-sm font-semibold truncate text-white">
             {displaySong.name}
           </p>
 
@@ -142,19 +135,17 @@ export default function CurrentlyPlaying() {
             {artistNames}
           </p>
 
-          {/* Equalizer + Time */}
-          <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center justify-between mt-3 sm:mt-2 gap-3">
             <div className="drop-shadow-[0_0_6px]" style={{ color }}>
               <Equalizer isPlaying={song?.playing ?? false} />
             </div>
 
-            <span className="text-[10px] text-gray-400">
+            <span className="text-[10px] text-gray-400 whitespace-nowrap">
               {formatTime(safeProgress)} / {formatTime(duration)}
             </span>
           </div>
 
-          {/* Progress Bar */}
-          <div className="w-full h-1 bg-gray-700 rounded mt-1 overflow-hidden">
+          <div className="w-full h-1 bg-gray-700 rounded mt-2 sm:mt-1 overflow-hidden">
             <div
               className="h-full transition-all duration-100 rounded"
               style={{
