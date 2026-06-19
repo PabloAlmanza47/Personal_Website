@@ -96,7 +96,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      contentClassName={showEmailWindow ? "sm:w-[54rem] sm:h-105" : "sm:w-130 sm:h-105"}
+      sizeClassName={showEmailWindow ? "sm:w-[54rem] sm:h-105" : "sm:w-130 sm:h-105"}
       initialOffset={{ x: 15, y: 30 }}
     >
       <div className={`flex flex-col ${showEmailWindow ? "lg:grid lg:grid-cols-[1fr_20rem]" : ""} flex-1 min-h-0`}>
