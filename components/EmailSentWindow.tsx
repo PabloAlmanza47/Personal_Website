@@ -17,7 +17,7 @@ export default function EmailSentWindow({ onClose, zIndex, bringToFront }: Email
       bringToFront={bringToFront}
       onClose={onClose}
       className="sm:w-48 sm:h-32"
-      contentClassName="sm:w-full sm:h-full"
+      sizeClassName="sm:w-full sm:h-full"
       initialOffset={{ x: 0, y: 0 }}
     >
       <div className="flex flex-col px-4 py-4 flex-1 items-center justify-center gap-3 text-center">
