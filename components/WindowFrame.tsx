@@ -11,6 +11,7 @@ type WindowFrameProps = {
   children: ReactNode;
   className?: string;
   contentClassName?: string;
+  sizeClassName?: string;
   initialOffset?: {
     x?: number;
     y?: number;
@@ -25,6 +26,7 @@ export default function WindowFrame({
   children,
   className = "",
   contentClassName = "",
+  sizeClassName = "sm:w-130 sm:h-105",
   initialOffset = { x: 15, y: 45 },
 }: WindowFrameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ export default function WindowFrame({
         exit={{ scale: 0.15, opacity: 0, y: 40 }}
         className={`pointer-events-auto fixed left-3 right-3 top-14 bottom-4 sm:absolute sm:inset-auto sm:top-1/2 sm:left-1/2 sm:right-auto sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2 bg-gray-950 p-1 rounded-lg ${className}`}
       >
-        <div className={`bg-gray-950 w-full h-full sm:w-130 sm:h-105 outline-2 outline-gray-500 rounded-sm flex flex-col overflow-hidden ${contentClassName}`}>
+        <div className={`bg-gray-950 w-full h-full ${sizeClassName} outline-2 outline-gray-500 rounded-sm flex flex-col overflow-hidden ${contentClassName}`}>
           <div
             onPointerDown={(e) => {
               bringToFront();
