@@ -1,14 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
-
-const files = [
-  { name: "about",      window: "about",      path: "/information/about" },
-  { name: "projects",   window: "projects",   path: "/information/projects" },
-  { name: "experience", window: "experience", path: "/information/experience" },
-  { name: "blog",       window: "blog",       path: "/information/blog" },
-  { name: "music",      window: "music",      path: "/music" },
-  { name: "tetris",     window: "tetris",     path: "/tetris" },
-];
+import { windowItems } from "../data/windows";
 
 function fuzzy(str: string, pattern: string): number[] | null {
   const s = str.toLowerCase(), p = pattern.toLowerCase();
@@ -40,8 +32,8 @@ export default function FuzzyFinder({ openWindow, onClose }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const matches = query
-    ? files.flatMap(f => { const idx = fuzzy(f.name, query); return idx ? [{ ...f, idx }] : []; })
-    : files.map(f => ({ ...f, idx: [] as number[] }));
+    ? windowItems.flatMap(f => { const idx = fuzzy(f.label, query); return idx ? [{ ...f, idx }] : []; })
+    : windowItems.map(f => ({ ...f, idx: [] as number[] }));
 
   useEffect(() => { setFocused(0); }, [query]);
 
@@ -52,7 +44,7 @@ export default function FuzzyFinder({ openWindow, onClose }: Props) {
 
       if (e.key === "ArrowDown") { e.preventDefault(); setFocused(f => Math.min(f + 1, matches.length - 1)); }
       if (e.key === "ArrowUp")   { e.preventDefault(); setFocused(f => Math.max(f - 1, 0)); }
-      if (e.key === "Enter" && matches[focused]) openWindow(matches[focused].window);
+      if (e.key === "Enter" && matches[focused]) openWindow(matches[focused].name);
       if (e.key === "Escape") { e.preventDefault(); onClose(); }
     };
     window.addEventListener("keydown", onKey);
@@ -76,12 +68,12 @@ export default function FuzzyFinder({ openWindow, onClose }: Props) {
         {matches.length === 0
           ? <span className="text-gray-700 text-xs">no results</span>
           : matches.map((file, i) => (
-            <div key={file.name} onClick={() => openWindow(file.window)}
+            <div key={file.name} onClick={() => openWindow(file.name)}
               className={`flex items-center gap-2 py-0.5 cursor-pointer ${i === focused ? "bg-white/5" : ""}`}>
               <div className={`w-0 h-0 border-t-4 border-b-4 border-l-[6px]
                 border-t-transparent border-b-transparent shrink-0 transition-colors
                 ${i === focused ? "border-l-blue-700" : "border-l-transparent"}`} />
-              <span className="text-xs font-mono">{highlight(file.name, file.idx)}</span>
+              <span className="text-xs font-mono">{highlight(file.label, file.idx)}</span>
               <span className="text-gray-700 text-[10px] ml-auto">{file.path}</span>
             </div>
           ))
