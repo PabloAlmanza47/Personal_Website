@@ -49,11 +49,7 @@ export default function WindowFrame({
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ zIndex }}
-      className="fixed inset-0 pointer-events-none p-3 sm:p-4"
-    >
+    <div ref={containerRef} style={{ zIndex }} className="fixed inset-0 pointer-events-none p-3 sm:p-4">
       <motion.div
         ref={windowRef}
         role="dialog"
@@ -66,40 +62,37 @@ export default function WindowFrame({
         dragMomentum={false}
         dragElastic={0}
         dragConstraints={containerRef}
-        initial={{ scale: 0.92, opacity: 0, y: 24 }}
+        initial={{ scale: 0.65, opacity: 0, y: 40 }}
         animate={{
           scale: 1,
           opacity: 1,
           x: isDesktop ? initialOffset.x ?? 0 : 0,
           y: isDesktop ? initialOffset.y ?? 0 : 0,
         }}
-        exit={{ scale: 0.94, opacity: 0, y: 18 }}
-        transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.7 }}
-        className={`pointer-events-auto fixed left-3 right-3 top-12 bottom-20 sm:absolute sm:inset-auto sm:top-1/2 sm:left-1/2 sm:right-auto sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2 rounded-xl bg-slate-950/95 p-1 shadow-2xl shadow-black/50 ring-1 ring-white/10 backdrop-blur-xl outline-none ${className}`}
+        exit={{ scale: 0.15, opacity: 0, y: 40 }}
+        className={`pointer-events-auto fixed left-3 right-3 top-12 bottom-20 bg-gray-950 p-1 rounded-lg outline-none sm:absolute sm:inset-auto sm:top-1/2 sm:left-1/2 sm:right-auto sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2 ${className}`}
       >
-        <div
-          className={`flex h-full w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-slate-950 ${sizeClassName} ${contentClassName}`}
-        >
+        <div className={`bg-gray-950 w-full h-full ${sizeClassName} outline-2 outline-gray-500 rounded-sm flex flex-col overflow-hidden ${contentClassName}`}>
           <div
             onPointerDown={(event) => {
               bringToFront();
               if (isDesktop) dragControls.start(event);
             }}
-            className={`relative flex h-8 w-full shrink-0 items-center border-b border-white/10 bg-white/[0.045] px-3 ${isDesktop ? "cursor-grab active:cursor-grabbing" : ""}`}
+            className={`bg-white/10 w-full h-6 sm:h-4 relative rounded-t-sm shrink-0 ${isDesktop ? "cursor-grab active:cursor-grabbing" : ""}`}
           >
-            <div className="flex items-center gap-1.5">
+            <div className="absolute left-0 flex h-full items-start">
               <button
                 type="button"
                 aria-label={`Close ${title}`}
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={onClose}
-                className="h-3 w-3 rounded-full bg-blue-500 transition hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"
+                className="bg-blue-900 w-7 sm:w-5 h-3 sm:h-2 hover:h-full transition-all duration-200 cursor-pointer rounded-tl-sm focus-visible:outline focus-visible:outline-1 focus-visible:outline-white"
               />
-              <span className="h-3 w-3 rounded-full bg-cyan-500/70" />
-              <span className="h-3 w-3 rounded-full bg-slate-500/70" />
+              <span aria-hidden="true" className="bg-blue-700 w-7 sm:w-5 h-3 sm:h-2" />
+              <span aria-hidden="true" className="bg-gray-600 w-7 sm:w-5 h-3 sm:h-2" />
             </div>
 
-            <h1 className="pointer-events-none absolute left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-wide text-white/50">
+            <h1 className="absolute left-1/2 text-[10px] -translate-x-1/2 text-white/60 h-full flex justify-center items-center font-mono">
               &gt; {title}_
             </h1>
           </div>
