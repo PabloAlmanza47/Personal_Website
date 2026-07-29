@@ -28,7 +28,7 @@ export default function AboutWindow({
   bringToFront,
   onEmailSent,
 }: AboutWindowProps) {
-  const [showContact, setShowContact] = useState(false);
+  const [showEmailWindow, setShowEmailWindow] = useState(false);
   const [copied, setCopied] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -64,7 +64,7 @@ export default function AboutWindow({
       }
 
       setStatus("sent");
-      setShowContact(false);
+      setShowEmailWindow(false);
       onEmailSent();
       setName("");
       setEmail("");
@@ -80,22 +80,22 @@ export default function AboutWindow({
 
   const actions = [
     {
-      icon: <EnvelopeSimpleIcon size={18} />,
-      action: () => setShowContact(true),
-      label: "Contact",
+      icon: <EnvelopeSimpleIcon size={20} />,
+      action: () => setShowEmailWindow(true),
+      label: "Email",
     },
     {
-      icon: <LinkedinLogoIcon size={18} />,
+      icon: <LinkedinLogoIcon size={20} />,
       action: () => window.open("https://www.linkedin.com/in/pabloalmanza/", "_blank", "noopener,noreferrer"),
       label: "LinkedIn",
     },
     {
-      icon: <ReadCvLogoIcon size={18} />,
+      icon: <ReadCvLogoIcon size={20} />,
       action: () => window.open("/resume.pdf", "_blank", "noopener,noreferrer"),
       label: "Resume",
     },
     {
-      icon: <GithubLogoIcon size={18} />,
+      icon: <GithubLogoIcon size={20} />,
       action: () => window.open("https://github.com/PabloAlmanza47", "_blank", "noopener,noreferrer"),
       label: "GitHub",
     },
@@ -103,79 +103,83 @@ export default function AboutWindow({
 
   return (
     <WindowFrame
-      title="About"
+      title="All about me!"
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      sizeClassName={showContact ? "sm:w-[56rem] sm:h-[33rem]" : "sm:w-[43rem] sm:h-[31rem]"}
-      initialOffset={{ x: 12, y: 28 }}
+      sizeClassName={showEmailWindow ? "sm:w-[54rem] sm:h-105" : "sm:w-130 sm:h-105"}
+      initialOffset={{ x: 15, y: 30 }}
     >
-      <div className={`flex flex-1 min-h-0 flex-col ${showContact ? "lg:grid lg:grid-cols-[1fr_21rem]" : ""}`}>
-        <section className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-300/70">
-            pablo@portfolio:~/about
+      <div className={`flex flex-col ${showEmailWindow ? "lg:grid lg:grid-cols-[1fr_20rem]" : ""} flex-1 min-h-0`}>
+        <section className="flex flex-col flex-1 min-h-0 px-3 sm:px-2 py-2 sm:py-1 gap-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+          <div className="text-xs font-mono text-gray-300 shrink-0">
+            <span>pablo</span>
+            <span className="text-blue-700">@term.portfolio</span>
+            <span>:aboutMe/info$ </span>
           </div>
 
-          <div className="flex flex-col gap-5 sm:flex-row">
+          <div className="flex flex-col sm:flex-row flex-1 gap-3 overflow-visible sm:overflow-hidden">
             <pre
-              className="hidden shrink-0 select-none whitespace-pre text-white/85 sm:block"
+              className="hidden sm:block whitespace-pre select-none text-white shrink-0"
               style={{
                 fontFamily: "Cascadia Code, Consolas, monospace",
                 fontVariantLigatures: "none",
-                fontSize: "10px",
+                fontSize: "11px",
                 lineHeight: "1",
               }}
             >
               {pabloAscii}
             </pre>
 
-            <div className="min-w-0 space-y-4">
+            <div className="flex flex-col gap-3 min-w-0">
               <pre
-                className="hidden select-none whitespace-pre text-blue-400 sm:block"
+                className="hidden sm:block whitespace-pre select-none text-blue-400"
                 style={{
                   fontFamily: "Cascadia Code, Consolas, monospace",
                   fontVariantLigatures: "none",
-                  fontSize: "10px",
+                  fontSize: "11px",
                   lineHeight: "1",
                 }}
               >
                 {pabloName}
               </pre>
 
-              <div className="sm:hidden">
-                <h2 className="text-2xl font-semibold text-white">Pablo Almanza</h2>
-                <p className="mt-1 font-mono text-xs text-blue-300">Software engineer and Texas A&amp;M CS student</p>
+              <div className="sm:hidden font-mono">
+                <h2 className="text-xl text-blue-400">Pablo Almanza</h2>
+                <p className="text-xs text-white/40">Software engineer and Texas A&amp;M CS student</p>
               </div>
 
-              <div className="space-y-3 text-sm leading-6 text-slate-300">
+              <div className="font-mono text-[11px] sm:text-[9px] space-y-3 sm:space-y-2.5 leading-relaxed">
                 <p>
-                  I am a computer science student at Texas A&amp;M University pursuing minors in
-                  Mathematics and Engineering Project Management. I currently build production
-                  software at PowerDB and will join Frogslayer as an incoming Junior Software Developer.
+                  is a computer science student at Texas A&amp;M University pursuing minors in
+                  Mathematics and Engineering Project Management. He currently builds production
+                  software at PowerDB and will join Frogslayer as a Junior Software Developer.
                 </p>
                 <p>
-                  My strongest work sits at the intersection of practical engineering and community impact:
-                  C# and Angular tools used in a production codebase, SHPE Connect for student networking,
-                  and technical leadership for the Texas A&amp;M SHPE website team.
+                  His work focuses on practical engineering and community impact: C# and Angular
+                  tools used in a production codebase, SHPE Connect for student networking, and
+                  technical leadership for the Texas A&amp;M SHPE website team.
                 </p>
                 <p>
-                  Born in Ohio and raised in Texas, I enjoy teaching programming, turning ambiguous
-                  problems into useful products, and building systems that make it easier for people to connect.
+                  Born in Ohio and raised in Texas, Pablo enjoys teaching programming, turning
+                  ambiguous problems into useful products, and building systems that help people connect.
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-2 pt-1">
+              <div className="flex flex-row flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-2 py-2">
                 {actions.map((item, index) => (
                   <motion.button
                     key={item.label}
                     type="button"
+                    title={item.label}
+                    aria-label={item.label}
                     onClick={item.action}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.06 }}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 font-mono text-[10px] text-slate-300 transition hover:border-blue-400/20 hover:bg-white/[0.08] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
+                    transition={{ delay: index * 0.08 }}
+                    className="text-gray-300 hover:text-blue-400 cursor-pointer transition duration-200 p-2 sm:p-1 rounded-sm hover:bg-white/5"
                   >
-                    {item.icon} {item.label}
+                    {item.icon}
                   </motion.button>
                 ))}
               </div>
@@ -184,50 +188,49 @@ export default function AboutWindow({
         </section>
 
         <AnimatePresence>
-          {showContact && (
+          {showEmailWindow && (
             <motion.aside
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.18 }}
-              className="border-t border-white/10 bg-black/20 p-4 lg:border-l lg:border-t-0"
+              exit={{ opacity: 0, x: 24 }}
+              transition={{ type: "tween", duration: 0.2 }}
+              className="border-t lg:border-t-0 lg:border-l border-gray-800 p-3 font-mono text-[11px] sm:text-[9px] flex flex-col gap-2 min-h-[22rem] lg:min-h-0"
             >
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-blue-300">Contact</p>
-                  <h2 className="mt-1 text-base font-medium text-white">Send a message</h2>
-                </div>
+                <h2 className="text-white/60">&gt; Contact_</h2>
                 <button
                   type="button"
-                  onClick={() => setShowContact(false)}
                   aria-label="Close contact form"
-                  className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-400 hover:bg-white/[0.06] hover:text-white"
-                >
-                  esc
-                </button>
+                  className="bg-blue-900 w-7 sm:w-5 h-3 sm:h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-sm"
+                  onClick={() => setShowEmailWindow(false)}
+                />
               </div>
 
-              <button
-                type="button"
-                className="mt-3 font-mono text-[10px] text-blue-300 hover:underline"
-                onClick={() => {
-                  navigator.clipboard.writeText("pabloalmanza3247@gmail.com");
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 900);
-                }}
-              >
-                {copied ? "Email copied" : "pabloalmanza3247@gmail.com"}
-              </button>
+              <div className="relative flex flex-wrap gap-x-1">
+                <span>Work Email:</span>
+                <button
+                  type="button"
+                  className="cursor-pointer text-blue-400 hover:underline"
+                  onClick={() => {
+                    navigator.clipboard.writeText("pabloalmanza3247@gmail.com");
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 800);
+                  }}
+                >
+                  pabloalmanza3247@gmail.com
+                </button>
+                {copied && <span className="text-blue-500">copied!</span>}
+              </div>
 
-              <form onSubmit={handleSubmit} className="mt-4 flex h-[calc(100%-5rem)] flex-col gap-2">
+              <form onSubmit={handleSubmit} className="flex flex-1 min-h-0 flex-col gap-2">
                 <label className="sr-only" htmlFor="contact-name">Name</label>
                 <input
                   id="contact-name"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   autoComplete="name"
-                  className="rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-400/50"
-                  placeholder="Your name"
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="your name:"
                 />
 
                 <label className="sr-only" htmlFor="contact-email">Email</label>
@@ -237,8 +240,8 @@ export default function AboutWindow({
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   autoComplete="email"
-                  className="rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-400/50"
-                  placeholder="Your email"
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="your email:"
                 />
 
                 <label className="sr-only" htmlFor="contact-subject">Subject</label>
@@ -246,8 +249,8 @@ export default function AboutWindow({
                   id="contact-subject"
                   value={subject}
                   onChange={(event) => setSubject(event.target.value)}
-                  className="rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-400/50"
-                  placeholder="Subject (optional)"
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="subject:"
                 />
 
                 <label className="sr-only" htmlFor="contact-company">Company</label>
@@ -266,22 +269,20 @@ export default function AboutWindow({
                   id="contact-message"
                   value={message}
                   onChange={(event) => setMessage(event.target.value)}
-                  className="min-h-28 flex-1 resize-none rounded-md border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-400/50"
-                  placeholder="What would you like to talk about?"
+                  className="bg-black border border-gray-700 px-2 py-1 flex-1 min-h-32 resize-none rounded-sm outline-none focus:border-blue-700"
+                  placeholder="message..."
                 />
 
                 {status === "error" && (
-                  <p role="alert" className="text-[10px] leading-4 text-red-300">
-                    {errorMessage}
-                  </p>
+                  <p role="alert" className="text-red-400">{errorMessage}</p>
                 )}
 
                 <button
                   type="submit"
+                  className="bg-blue-700 hover:bg-blue-600 px-2 py-2 sm:py-1 disabled:opacity-50 rounded-sm font-mono"
                   disabled={status === "sending"}
-                  className="rounded-md bg-blue-600 px-3 py-2 font-mono text-xs text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {status === "sending" ? "Sending..." : "Send message"}
+                  {status === "sending" ? "..." : "send"}
                 </button>
               </form>
             </motion.aside>
