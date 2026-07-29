@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
-import { experienceItems, type ExperienceStatus } from "../data/experience";
+import { experienceItems } from "../data/experience";
 import WindowFrame from "./WindowFrame";
 
 interface ExperienceProps {
@@ -11,18 +11,6 @@ interface ExperienceProps {
   onClose: () => void;
 }
 
-const statusLabel: Record<ExperienceStatus, string> = {
-  incoming: "Incoming",
-  current: "Current",
-  past: "Previous",
-};
-
-const statusClassName: Record<ExperienceStatus, string> = {
-  incoming: "border-blue-400/20 bg-blue-400/[0.08] text-blue-200",
-  current: "border-emerald-400/20 bg-emerald-400/[0.08] text-emerald-200",
-  past: "border-white/10 bg-white/[0.04] text-slate-400",
-};
-
 export default function Experience({ zIndex, bringToFront, onClose }: ExperienceProps) {
   return (
     <WindowFrame
@@ -30,73 +18,58 @@ export default function Experience({ zIndex, bringToFront, onClose }: Experience
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      sizeClassName="sm:w-[46rem] sm:h-[34rem]"
+      sizeClassName="sm:w-[43rem] sm:h-[31rem]"
     >
-      <div className="flex flex-1 min-h-0 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-        <header className="space-y-1 border-b border-white/10 pb-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-300/70">
-            Professional experience &amp; technical leadership
-          </p>
-          <h2 className="text-xl font-semibold text-white">Building software in production and in community</h2>
-        </header>
+      <div className="flex flex-col flex-1 min-h-0 px-3 sm:px-2 py-2 sm:py-1 gap-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+        <div className="text-xs font-mono text-gray-300 shrink-0">
+          <span>pablo</span>
+          <span className="text-blue-700">@term.portfolio</span>
+          <span>:experience/info$ </span>
+        </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4 sm:gap-3">
           {experienceItems.map((item) => (
-            <article
-              key={`${item.company}-${item.role}`}
-              className="rounded-xl border border-white/10 bg-white/[0.025] p-4 transition hover:border-blue-400/20 hover:bg-white/[0.04]"
-            >
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base font-medium text-white">{item.role}</h3>
-                    <span
-                      className={`rounded-full border px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider ${statusClassName[item.status]}`}
-                    >
-                      {statusLabel[item.status]}
-                    </span>
-                  </div>
-
+            <article key={`${item.company}-${item.role}`} className="text-[11px] sm:text-[10px] font-mono flex flex-col gap-1">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   {item.url ? (
-                    <Link
-                      href={item.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1 inline-flex items-center gap-1 text-sm text-blue-300 transition hover:text-blue-200 hover:underline"
-                    >
-                      {item.company} <ArrowUpRightIcon size={12} />
+                    <Link href={item.url} target="_blank" rel="noreferrer" className="hover:underline w-fit">
+                      <h2 className="text-white text-sm sm:text-xs">{item.role}</h2>
                     </Link>
                   ) : (
-                    <p className="mt-1 text-sm text-blue-300">{item.company}</p>
+                    <h2 className="text-white text-sm sm:text-xs">{item.role}</h2>
                   )}
+                  <span className={item.status === "incoming" ? "text-blue-400" : item.status === "current" ? "text-green-400" : "text-white/35"}>
+                    [{item.status}]
+                  </span>
                 </div>
 
-                <div className="font-mono text-[10px] leading-5 text-slate-500 sm:text-right">
-                  <p>{item.dates}</p>
-                  <p>{item.location}</p>
-                </div>
+                <span className="text-white/35 sm:text-right">{item.dates}</span>
               </div>
 
-              <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-300 sm:text-[13px]">
-                {item.highlights.map((highlight) => (
-                  <li key={highlight} className="flex gap-2">
-                    <span className="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-cyan-400/80" />
-                    <span>{highlight}</span>
+              <div className="flex flex-wrap items-center gap-x-2 text-white/50">
+                <span>{item.company}</span>
+                <span>·</span>
+                <span>{item.location}</span>
+              </div>
+
+              <ul className="flex flex-wrap gap-1 font-thin italic text-white">
+                {item.tech.map((tech) => (
+                  <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                    <span className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                    <Link href={tech.url} target="_blank" rel="noreferrer" className="relative z-10 flex gap-1 items-center">
+                      <span>{tech.name}</span>
+                      <ArrowUpRightIcon size={11} />
+                    </Link>
                   </li>
                 ))}
               </ul>
 
-              <ul className="mt-3 flex flex-wrap gap-1.5" aria-label={`${item.role} technologies`}>
-                {item.tech.map((tech) => (
-                  <li key={tech.name}>
-                    <Link
-                      href={tech.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/20 px-2 py-1 font-mono text-[9px] text-slate-400 transition hover:border-blue-400/20 hover:text-slate-200"
-                    >
-                      {tech.name} <ArrowUpRightIcon size={9} />
-                    </Link>
+              <ul className="flex flex-col gap-1 text-white/50 leading-relaxed">
+                {item.highlights.map((highlight) => (
+                  <li key={highlight} className="flex gap-2">
+                    <span className="text-blue-500">-</span>
+                    <span>{highlight}</span>
                   </li>
                 ))}
               </ul>
