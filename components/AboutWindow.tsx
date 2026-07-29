@@ -150,19 +150,32 @@ export default function AboutWindow({
               </div>
 
               <div className="font-mono text-[11px] sm:text-[9px] space-y-3 sm:space-y-2.5 leading-relaxed">
-                <p>
-                  is a computer science student at Texas A&amp;M University pursuing minors in
-                  Mathematics and Engineering Project Management. He currently builds production
-                  software at PowerDB and will join Frogslayer as a Junior Software Developer.
+                <p className="text-white/70">
+                  I&apos;m a computer science student at Texas A&amp;M who likes building software
+                  that solves real problems and feels useful to the people using it.
                 </p>
-                <p>
-                  His work focuses on practical engineering and community impact: C# and Angular
-                  tools used in a production codebase, SHPE Connect for student networking, and
-                  technical leadership for the Texas A&amp;M SHPE website team.
-                </p>
-                <p>
-                  Born in Ohio and raised in Texas, Pablo enjoys teaching programming, turning
-                  ambiguous problems into useful products, and building systems that help people connect.
+
+                <div className="space-y-1.5">
+                  <p className="text-blue-400">currently:</p>
+                  <ul className="space-y-1 text-white/55">
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>building production C# and Angular software at PowerDB</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>preparing to join Frogslayer as a Junior Software Developer</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>leading web development for Texas A&amp;M SHPE and building SHPE Connect</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <p className="text-white/55">
+                  Born in Ohio and raised in Texas. Outside of work and school, I enjoy teaching,
+                  indie music, and turning rough ideas into projects people can actually use.
                 </p>
               </div>
 
