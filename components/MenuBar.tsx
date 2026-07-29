@@ -1,9 +1,15 @@
 export default function MenuBar() {
   return (
-    <nav className="absolute top-0 bg-gray-950/95 backdrop-blur w-full h-8 sm:h-6 flex items-center z-100 px-3 sm:px-4 border-b border-white/5">
-      <span className="text-[11px] sm:text-sm font-mono text-gray-500 truncate">
-        Pablo Almanza | Software Developer
+    <header className="absolute inset-x-0 top-0 z-[1000] flex h-8 items-center justify-between border-b border-white/10 bg-slate-950/80 px-3 font-mono text-[10px] text-slate-500 backdrop-blur-xl sm:px-4">
+      <span className="truncate">
+        <span className="text-slate-300">Pablo Almanza</span>
+        <span className="mx-2 text-white/20">/</span>
+        Software Engineer
       </span>
-    </nav>
+      <span className="hidden items-center gap-2 sm:flex">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)]" />
+        PowerDB · Incoming Frogslayer
+      </span>
+    </header>
   );
 }

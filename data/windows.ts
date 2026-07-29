@@ -1,4 +1,4 @@
-export type WindowName = "about" | "projects" | "experience" | "music";
+export type WindowName = "overview" | "about" | "projects" | "experience" | "music";
 
 export type WindowItem = {
   name: WindowName;
@@ -7,6 +7,7 @@ export type WindowItem = {
 };
 
 export const windowItems: WindowItem[] = [
+  { name: "overview", label: "overview", path: "/overview" },
   { name: "about", label: "about", path: "/information/about" },
   { name: "projects", label: "projects", path: "/information/projects" },
   { name: "experience", label: "experience", path: "/information/experience" },
