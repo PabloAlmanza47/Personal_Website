@@ -1,45 +1,56 @@
 'use client'
-import ProjectsWindow from "../../components/ProjectsWindow";
-import AboutWindow from "../../components/AboutWindow";
-import BlogWindow from "../../components/BlogWindow";
-import MenuBar from "../../components/MenuBar";
-import MusicWindow from "../../components/MusicWindow";
-import Terminal from "../../components/Terminal";
+
+import { AnimatePresence } from "motion/react";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion"
+import AboutWindow from "../../components/AboutWindow";
 import EmailSentWindow from "../../components/EmailSentWindow";
 import Experience from "../../components/Experience";
+import MenuBar from "../../components/MenuBar";
+import MusicWindow from "../../components/MusicWindow";
+import ProjectsWindow from "../../components/ProjectsWindow";
+import Terminal from "../../components/Terminal";
+import type { WindowName } from "../../data/windows";
 
-//one of the button on the top of the windows, will make the screen full screen meaning that it will show a true porfolio that has all of the information
-//on one page that can be scrolled through
+type AppWindowName = WindowName | "terminal" | "emailSent";
+
+type OpenWindow = {
+  id: string;
+  name: AppWindowName;
+  z: number;
+};
+
+const dockItems: { name: AppWindowName; label: string; shortLabel: string }[] = [
+  { name: "about", label: "About and contact", shortLabel: "about" },
+  { name: "experience", label: "Experience", shortLabel: "work" },
+  { name: "projects", label: "Projects", shortLabel: "build" },
+  { name: "terminal", label: "Terminal", shortLabel: ">_" },
+  { name: "music", label: "Music", shortLabel: "music" },
+];
 
 export default function Home() {
-  type WindowType = {
-    id: string;
-    name: string;
-    z: number;
-  };
-
-  const [openWindows, setOpenWindows] = useState<WindowType[]>([]);
-
+  const [openWindows, setOpenWindows] = useState<OpenWindow[]>([
+    { id: "about", name: "about", z: 1 },
+  ]);
   const [topZ, setTopZ] = useState(1);
 
   const openWindow = (name: string) => {
-    setTopZ(prevZ => {
-      const newZ = prevZ + 1;
+    const windowName = name as AppWindowName;
 
-      setOpenWindows(prev => {
-        const existing = prev.find(w => w.name === name);
+    setTopZ((previousZ) => {
+      const newZ = previousZ + 1;
+
+      setOpenWindows((previousWindows) => {
+        const existing = previousWindows.find((window) => window.name === windowName);
 
         if (existing) {
-          return prev.map(w =>
-            w.id === existing.id ? { ...w, z: newZ } : w
+          return previousWindows.map((window) =>
+            window.id === existing.id ? { ...window, z: newZ } : window,
           );
         }
 
         return [
-          ...prev,
-          { id: crypto.randomUUID(), name, z: newZ }
+          ...previousWindows,
+          { id: crypto.randomUUID(), name: windowName, z: newZ },
         ];
       });
 
@@ -48,117 +59,97 @@ export default function Home() {
   };
 
   const closeWindow = (id: string) => {
-    setOpenWindows(prev => prev.filter(w => w.id !== id));
+    setOpenWindows((previousWindows) => previousWindows.filter((window) => window.id !== id));
   };
 
   const bringToFront = (id: string) => {
-    setTopZ(prev => {
-      const newZ = prev + 1;
-
-      setOpenWindows(wins =>
-        wins.map(w =>
-          w.id === id ? { ...w, z: newZ } : w
-        )
+    setTopZ((previousZ) => {
+      const newZ = previousZ + 1;
+      setOpenWindows((windows) =>
+        windows.map((window) => (window.id === id ? { ...window, z: newZ } : window)),
       );
-
       return newZ;
     });
   };
 
   return (
-    <main className="bg-gray-900 font-bold flex justify-center items-center h-dvh overflow-hidden relative px-3 sm:px-0">
+    <main className="portfolio-desktop relative flex h-dvh items-center justify-center overflow-hidden bg-slate-950 px-3 font-bold text-white sm:px-0">
       <MenuBar />
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.14),transparent_45%)] pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_28%,rgba(37,99,235,0.17),transparent_30%),radial-gradient(circle_at_72%_68%,rgba(6,182,212,0.10),transparent_32%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-blue-950/25 to-transparent" />
 
       {openWindows.length === 0 && (
-        <div className="text-center font-mono text-white/70 max-w-xs sm:max-w-none px-4">
-          <p className="text-xs sm:text-sm">Pablo Almanza&apos;s terminal portfolio</p>
-          <p className="text-[10px] sm:text-xs text-white/40 mt-1">Tap the dock button to open the terminal.</p>
-        </div>
+        <button
+          type="button"
+          onClick={() => openWindow("about")}
+          className="relative z-10 font-mono text-xs text-white/45 transition hover:text-blue-400"
+        >
+          Pablo Almanza&apos;s terminal portfolio — open about
+        </button>
       )}
 
-      <div className="bg-white/10 w-14 h-14 sm:w-12 sm:h-12 absolute bottom-5 sm:bottom-4 p-1 rounded-full hover:sm:w-20 transition-all duration-400 shadow-md shadow-black ease-in-out z-50">
-        <button
-          aria-label="Open terminal"
-          className="bg-black w-full h-full rounded-full outline outline-white text-gray-500 text-center hover:text-white active:scale-95 transition-all duration-200"
-          onClick={() => openWindow("terminal")}
-        >
-          {"</>"}
-        </button>
-      </div>
-
       <AnimatePresence>
-        {openWindows.map(win => {
-          switch (win.name) {
-            case "terminal":
-              return (
-                <Terminal
-                  key={win.id}
-                  openWindow={openWindow}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
-                />
-              );
+        {openWindows.map((window) => {
+          const sharedProps = {
+            key: window.id,
+            zIndex: window.z,
+            bringToFront: () => bringToFront(window.id),
+            onClose: () => closeWindow(window.id),
+          };
 
+          switch (window.name) {
+            case "terminal":
+              return <Terminal {...sharedProps} openWindow={openWindow} />;
             case "about":
               return (
                 <AboutWindow
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
+                  {...sharedProps}
                   onEmailSent={() => openWindow("emailSent")}
                 />
               );
-
             case "emailSent":
-              return (
-                <EmailSentWindow
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
-                />
-              );
-
+              return <EmailSentWindow {...sharedProps} />;
             case "music":
-              return (
-                <MusicWindow
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
-                />
-              );
-
+              return <MusicWindow {...sharedProps} />;
             case "projects":
-              return (
-                <ProjectsWindow
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
-                />
-              );
-
+              return <ProjectsWindow {...sharedProps} />;
             case "experience":
-              return (
-                <Experience
-                  key={win.id}
-                  zIndex={win.z}
-                  bringToFront={() => bringToFront(win.id)}
-                  onClose={() => closeWindow(win.id)}
-                />
-              )
-
+              return <Experience {...sharedProps} />;
             default:
               return null;
           }
         })}
-
       </AnimatePresence>
+
+      <nav
+        aria-label="Portfolio windows"
+        className="fixed bottom-3 left-1/2 z-[1000] flex max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center gap-1 overflow-x-auto rounded-xl border border-white/10 bg-slate-950/85 p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl sm:bottom-4"
+      >
+        {dockItems.map((item) => {
+          const isOpen = openWindows.some((window) => window.name === item.name);
+
+          return (
+            <button
+              key={item.name}
+              type="button"
+              aria-label={item.label}
+              aria-pressed={isOpen}
+              onClick={() => openWindow(item.name)}
+              className={`relative shrink-0 rounded-lg px-3 py-2 font-mono text-[10px] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 sm:px-3.5 ${
+                isOpen
+                  ? "bg-blue-500/15 text-blue-200"
+                  : "text-slate-500 hover:bg-white/[0.06] hover:text-slate-200"
+              }`}
+            >
+              {item.shortLabel}
+              {isOpen && (
+                <span className="absolute inset-x-3 -bottom-0.5 h-px bg-cyan-400/80" />
+              )}
+            </button>
+          );
+        })}
+      </nav>
     </main>
   );
 }

@@ -3,64 +3,94 @@ export type TechLink = {
   url: string;
 };
 
+export type ProjectLink = {
+  label: string;
+  url: string;
+};
+
 export type Project = {
   title: string;
-  url: string;
+  eyebrow: string;
+  featured?: boolean;
   tech: TechLink[];
   description: string;
+  highlights: string[];
+  links: ProjectLink[];
 };
 
 export const projects: Project[] = [
   {
-    title: "TAMU SHPE Website",
-    url: "https://tamushpe.org/",
+    title: "SHPE Connect",
+    eyebrow: "Featured full-stack platform",
+    featured: true,
     tech: [
-      { name: "TailwindCSS", url: "https://tailwindcss.com" },
-      { name: "TypeScript", url: "https://www.typescriptlang.org" },
-      { name: "React", url: "https://react.dev" },
-      { name: "Next.js", url: "https://nextjs.org" },
+      { name: "Next.js", url: "https://nextjs.org/" },
+      { name: "TypeScript", url: "https://www.typescriptlang.org/" },
+      { name: "PostgreSQL", url: "https://www.postgresql.org/" },
+      { name: "Prisma", url: "https://www.prisma.io/" },
+      { name: "Auth.js", url: "https://authjs.dev/" },
+      { name: "Vercel", url: "https://vercel.com/" },
     ],
     description:
-      "Developed and deployed a responsive website for a 200+ member engineering organization. Built reusable components using React and TypeScript, improving maintainability and page performance.",
+      "A member-networking platform for the Texas A&M SHPE chapter, built to help students discover the community, create meaningful profiles, and connect with other current and former members.",
+    highlights: [
+      "Built authentication, protected routes, role-based access control, member profiles, and a searchable directory.",
+      "Designed the product and data model around real chapter workflows, including officer administration, onboarding, opportunities, sponsors, and future career-profile tools.",
+    ],
+    links: [
+      { label: "Live site", url: "https://shpe-connect.vercel.app/" },
+    ],
   },
   {
-    title: "ColorStack Website",
-    url: "https://tamucolorstack.com/",
+    title: "Texas A&M SHPE Website",
+    eyebrow: "Organization platform",
     tech: [
-      { name: "TailwindCSS", url: "https://tailwindcss.com" },
-      { name: "TypeScript", url: "https://www.typescriptlang.org" },
-      { name: "React", url: "https://react.dev" },
-      { name: "Figma", url: "https://www.figma.com" },
+      { name: "Next.js", url: "https://nextjs.org/" },
+      { name: "React", url: "https://react.dev/" },
+      { name: "TypeScript", url: "https://www.typescriptlang.org/" },
+      { name: "Tailwind CSS", url: "https://tailwindcss.com/" },
     ],
     description:
-      "Contributed to the development of a modern organization website, focusing on clean UI and responsive design. Collaborated with a team using Git and GitHub to ship production-ready features.",
+      "The public website for a student engineering organization serving more than 500 members at Texas A&M.",
+    highlights: [
+      "Maintain reusable components and responsive member-facing pages as Website Development Lead.",
+      "Coordinate contributor onboarding, GitHub reviews, and weekly development work across the team.",
+    ],
+    links: [{ label: "Visit site", url: "https://tamushpe.org/" }],
   },
   {
-    title: "Personal Website",
-    url: "https://pablosweb.netlify.app/",
+    title: "Terminal Portfolio",
+    eyebrow: "Interactive personal website",
     tech: [
-      { name: "TailwindCSS", url: "https://tailwindcss.com" },
-      { name: "Netlify", url: "https://www.netlify.com" },
-      { name: "Framer Motion", url: "https://www.framer.com/motion" },
-      { name: "Next.js", url: "https://nextjs.org" },
+      { name: "Next.js", url: "https://nextjs.org/" },
+      { name: "React", url: "https://react.dev/" },
+      { name: "Tailwind CSS", url: "https://tailwindcss.com/" },
+      { name: "Motion", url: "https://motion.dev/" },
     ],
     description:
-      "Designed and built a terminal-inspired portfolio using Next.js and Framer Motion. Implemented draggable window components and dynamic UI interactions to create a unique user experience.",
+      "A desktop-inspired portfolio with draggable windows, terminal commands, fuzzy navigation, responsive panels, and data-driven content.",
+    highlights: [
+      "Created a reusable window system and keyboard-driven terminal experience without sacrificing direct navigation.",
+      "Structured project and experience content as typed data so future updates do not require rewriting components.",
+    ],
+    links: [
+      { label: "Source", url: "https://github.com/PabloAlmanza47/Personal_Website" },
+    ],
   },
   {
     title: "Tree Chop Mania",
-    url: "https://github.com/PabloAlmanza47/Tree_Chop_Mania",
+    eyebrow: "Python terminal game",
     tech: [
-      { name: "Python", url: "https://www.python.org" },
-      { name: "Git/GitHub", url: "https://www.github.com" },
+      { name: "Python", url: "https://www.python.org/" },
+      { name: "Git/GitHub", url: "https://github.com/" },
     ],
     description:
-      "Built a simple game using Python, implementing core game logic and user interaction. Practiced problem-solving and control flow while managing game state and input handling.",
+      "A terminal-based progression game focused on game state, durability, leveling, currency, and save-file persistence.",
+    highlights: [
+      "Implemented a progression loop with player statistics, equipment durability, leveling, and saved state.",
+    ],
+    links: [
+      { label: "Source", url: "https://github.com/PabloAlmanza47/Tree_Chop_Mania" },
+    ],
   },
-];
-
-export const currentTools = [
-  { label: "Terminal", value: "Ghostty" },
-  { label: "IDE", value: "Neovim w/ Tmux" },
-  { label: "OS", value: "Arch Linux w/ Hyprland" },
 ];

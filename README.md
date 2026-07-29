@@ -1,60 +1,82 @@
-# Pablo's Personal Website
+# Pablo Almanza — Personal Portfolio
 
-A terminal-inspired personal portfolio built with Next.js, TypeScript, Tailwind CSS, and Framer Motion-style window animations.
+A terminal and desktop-inspired portfolio built with Next.js, TypeScript, Tailwind CSS, and Motion.
 
-The site is designed like a small desktop environment where visitors can open draggable windows, use terminal commands, search through sections with a fuzzy finder, and explore projects, experience, music, and contact information.
+The interface preserves the interactive operating-system concept while making the core portfolio accessible through the original About window, terminal commands, fuzzy navigation, and persistent dock shortcuts.
+
+## Portfolio content
+
+The portfolio currently highlights:
+
+- Production software experience at PowerDB
+- An incoming Junior Software Developer role at Frogslayer
+- Website Development Lead work for Texas A&M SHPE
+- SHPE Connect as the featured full-stack project
+- Teaching and mentorship experience at Texas A&M
 
 ## Features
 
-- Draggable desktop-style windows
-- Interactive terminal commands
-- Fuzzy finder for opening site sections
+- Original terminal-styled About window as the opening experience
+- Draggable desktop windows and mobile full-screen panels
+- Interactive terminal commands and fuzzy finder
 - Data-driven project and experience sections
-- Contact form window
-- Terminal/OS-inspired visual style
+- Responsive dock navigation
+- Spotify currently-playing window
+- Server-routed contact form
+- Reduced-motion and keyboard-focus support
 
-## Tech Stack
+## Tech stack
 
-- Next.js
+- Next.js App Router
 - React
 - TypeScript
 - Tailwind CSS
-- Framer Motion
+- Motion
 - Phosphor Icons
-- Netlify / Vercel-ready deployment
+- Netlify / Vercel-compatible deployment
 
-## Project Structure
+## Project structure
 
 ```txt
-components/       Reusable UI windows and interactive components
-data/             Central data sources for projects, experience, and windows
-src/app/          Next.js app router pages, layout, and global styles
-ascii/            ASCII art used throughout the terminal-style interface
-public/           Static assets such as sounds and resume files
+components/       Reusable windows and interactive UI
+data/             Typed portfolio content and window registry
+src/app/          App Router pages, API routes, metadata, and global styles
+ascii/            ASCII art used by the terminal interface
+public/           Static assets, sounds, and resume.pdf
 ```
 
-## Getting Started
-
-Install dependencies:
+## Getting started
 
 ```bash
 npm install
-```
-
-Run the development server:
-
-```bash
 npm run dev
 ```
 
-Open `http://localhost:3000` in your browser.
+Open `http://localhost:3000`.
 
-## Editing Content
+## Environment variables
 
-Most portfolio content should now be edited from the `data/` folder instead of directly inside JSX components.
+Copy `.env.example` to `.env.local` and configure:
 
-- Add or edit projects in `data/projects.ts`
-- Add or edit experience entries in `data/experience.ts`
-- Add or edit searchable/openable windows in `data/windows.ts`
+```bash
+CONTACT_WEBHOOK_URL=
+```
 
-This keeps the portfolio easier to update as new projects, roles, and sections are added.
+`CONTACT_WEBHOOK_URL` is used only by the server-side `/api/contact` route. The contact form returns a direct-email fallback message when it is not configured.
+
+## Updating content
+
+Most portfolio updates should be made in the `data/` directory:
+
+- `data/experience.ts` — companies, roles, dates, technologies, and highlights
+- `data/projects.ts` — featured and secondary projects
+- `data/windows.ts` — terminal and fuzzy-finder window registry
+
+Replace `public/resume.pdf` whenever the downloadable resume changes.
+
+## Validation
+
+```bash
+npm run lint
+npm run build
+```

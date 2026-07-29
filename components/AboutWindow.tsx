@@ -3,8 +3,14 @@
 import pabloAscii from "../ascii/pabloAscii";
 import pabloName from "../ascii/pabloName";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ReadCvLogoIcon, GithubLogoIcon, EnvelopeSimpleIcon, LinkedinLogoIcon } from "@phosphor-icons/react";
+import type { FormEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import {
+  EnvelopeSimpleIcon,
+  GithubLogoIcon,
+  LinkedinLogoIcon,
+  ReadCvLogoIcon,
+} from "@phosphor-icons/react";
 import WindowFrame from "./WindowFrame";
 
 interface AboutWindowProps {
@@ -14,56 +20,61 @@ interface AboutWindowProps {
   onEmailSent: () => void;
 }
 
-export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent }: AboutWindowProps) {
+type FormStatus = "idle" | "sending" | "sent" | "error";
+
+export default function AboutWindow({
+  onClose,
+  zIndex,
+  bringToFront,
+  onEmailSent,
+}: AboutWindowProps) {
   const [showEmailWindow, setShowEmailWindow] = useState(false);
   const [copied, setCopied] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [company, setCompany] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSend = async () => {
-    if (!name || !email || !message) {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrorMessage("");
+
+    if (!name.trim() || !email.trim() || message.trim().length < 10) {
       setStatus("error");
+      setErrorMessage("Please include your name, email, and a message of at least 10 characters.");
       return;
     }
 
     setStatus("sending");
 
     try {
-      const response = await fetch("https://hook.us2.make.com/2uoju11xfitvznsapc5yjwa4yxh36xfd", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          subject,
-          message,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, subject, message, company }),
       });
 
+      const result = (await response.json().catch(() => null)) as { error?: string } | null;
+
       if (!response.ok) {
-        throw new Error("Message failed to send");
+        throw new Error(result?.error || "Message failed to send.");
       }
 
       setStatus("sent");
       setShowEmailWindow(false);
       onEmailSent();
-
-      setTimeout(() => {
-        setName("");
-        setEmail("");
-        setSubject("");
-        setMessage("");
-        setStatus("idle");
-      }, 2500);
-    } catch (err) {
-      console.error(err);
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+      setCompany("");
+      setTimeout(() => setStatus("idle"), 2500);
+    } catch (error) {
       setStatus("error");
+      setErrorMessage(error instanceof Error ? error.message : "Message failed to send.");
     }
   };
 
@@ -75,17 +86,17 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
     },
     {
       icon: <LinkedinLogoIcon size={20} />,
-      action: () => window.open("https://www.linkedin.com/in/pabloalmanza/", "_blank"),
+      action: () => window.open("https://www.linkedin.com/in/pabloalmanza/", "_blank", "noopener,noreferrer"),
       label: "LinkedIn",
     },
     {
       icon: <ReadCvLogoIcon size={20} />,
-      action: () => window.open("/resume.pdf", "_blank"),
+      action: () => window.open("/resume.pdf", "_blank", "noopener,noreferrer"),
       label: "Resume",
     },
     {
       icon: <GithubLogoIcon size={20} />,
-      action: () => window.open("https://github.com/PabloAlmanza47", "_blank"),
+      action: () => window.open("https://github.com/PabloAlmanza47", "_blank", "noopener,noreferrer"),
       label: "GitHub",
     },
   ];
@@ -135,37 +146,50 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
 
               <div className="sm:hidden font-mono">
                 <h2 className="text-xl text-blue-400">Pablo Almanza</h2>
-                <p className="text-xs text-white/40">Computer Science student and software developer</p>
+                <p className="text-xs text-white/40">Software engineer and Texas A&amp;M CS student</p>
               </div>
 
               <div className="font-mono text-[11px] sm:text-[9px] space-y-3 sm:space-y-2.5 leading-relaxed">
-                <p>
-                  is a computer science student and builder on the internet,
-                  creating software, games, and experiments while documenting
-                  the process of learning and building in public.
+                <p className="text-white/70">
+                  I&apos;m a computer science student at Texas A&amp;M who likes building software
+                  that solves real problems and feels useful to the people using it.
                 </p>
-                <p>
-                  Born in Houston and raised in Dallas, he currently studies
-                  Computer Science at Texas A&amp;M University. His work ranges
-                  from modern web development and systems programming to small
-                  interactive games and creative side projects.
-                </p>
-                <p>
-                  Pablo is also passionate about indie music, teaching
-                  programming, and breaking down complex technical ideas so
-                  others can learn how to build their own tools and projects.
+
+                <div className="space-y-1.5">
+                  <p className="text-blue-400">currently:</p>
+                  <ul className="space-y-1 text-white/55">
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>building production C# and Angular software at PowerDB</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>preparing to join Frogslayer as a Junior Software Developer</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-700">-</span>
+                      <span>leading web development for Texas A&amp;M SHPE and building SHPE Connect</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <p className="text-white/55">
+                  Born in Ohio and raised in Texas. Outside of work and school, I enjoy teaching,
+                  indie music, and turning rough ideas into projects people can actually use.
                 </p>
               </div>
 
               <div className="flex flex-row flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-2 py-2">
-                {actions.map((item, i) => (
+                {actions.map((item, index) => (
                   <motion.button
                     key={item.label}
+                    type="button"
                     title={item.label}
+                    aria-label={item.label}
                     onClick={item.action}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 }}
+                    transition={{ delay: index * 0.08 }}
                     className="text-gray-300 hover:text-blue-400 cursor-pointer transition duration-200 p-2 sm:p-1 rounded-sm hover:bg-white/5"
                   >
                     {item.icon}
@@ -186,8 +210,9 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
               className="border-t lg:border-t-0 lg:border-l border-gray-800 p-3 font-mono text-[11px] sm:text-[9px] flex flex-col gap-2 min-h-[22rem] lg:min-h-0"
             >
               <div className="flex items-center justify-between">
-                <h2 className="text-white/60">{'>'} Contact_</h2>
+                <h2 className="text-white/60">&gt; Contact_</h2>
                 <button
+                  type="button"
                   aria-label="Close contact form"
                   className="bg-blue-900 w-7 sm:w-5 h-3 sm:h-2 hover:h-4 transition-all duration-200 cursor-pointer rounded-sm"
                   onClick={() => setShowEmailWindow(false)}
@@ -197,6 +222,7 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
               <div className="relative flex flex-wrap gap-x-1">
                 <span>Work Email:</span>
                 <button
+                  type="button"
                   className="cursor-pointer text-blue-400 hover:underline"
                   onClick={() => {
                     navigator.clipboard.writeText("pabloalmanza3247@gmail.com");
@@ -209,45 +235,69 @@ export default function AboutWindow({ onClose, zIndex, bringToFront, onEmailSent
                 {copied && <span className="text-blue-500">copied!</span>}
               </div>
 
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
-                placeholder="your name:"
-              />
+              <form onSubmit={handleSubmit} className="flex flex-1 min-h-0 flex-col gap-2">
+                <label className="sr-only" htmlFor="contact-name">Name</label>
+                <input
+                  id="contact-name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  autoComplete="name"
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="your name:"
+                />
 
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
-                placeholder="your email:"
-              />
+                <label className="sr-only" htmlFor="contact-email">Email</label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  autoComplete="email"
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="your email:"
+                />
 
-              <input
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
-                placeholder="subject:"
-              />
+                <label className="sr-only" htmlFor="contact-subject">Subject</label>
+                <input
+                  id="contact-subject"
+                  value={subject}
+                  onChange={(event) => setSubject(event.target.value)}
+                  className="bg-black border border-gray-700 px-2 py-1 rounded-sm outline-none focus:border-blue-700"
+                  placeholder="subject:"
+                />
 
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="bg-black border border-gray-700 px-2 py-1 flex-1 min-h-32 resize-none rounded-sm outline-none focus:border-blue-700"
-                placeholder="message..."
-              />
+                <label className="sr-only" htmlFor="contact-company">Company</label>
+                <input
+                  id="contact-company"
+                  value={company}
+                  onChange={(event) => setCompany(event.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
 
-              {status === "error" && (
-                <p className="text-red-400">Please fill out your name, email, and message.</p>
-              )}
+                <label className="sr-only" htmlFor="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                  className="bg-black border border-gray-700 px-2 py-1 flex-1 min-h-32 resize-none rounded-sm outline-none focus:border-blue-700"
+                  placeholder="message..."
+                />
 
-              <button
-                className="bg-blue-700 hover:bg-blue-600 px-2 py-2 sm:py-1 disabled:opacity-50 rounded-sm font-mono"
-                onClick={handleSend}
-                disabled={status === "sending"}
-              >
-                {status === "sending" ? "..." : "send"}
-              </button>
+                {status === "error" && (
+                  <p role="alert" className="text-red-400">{errorMessage}</p>
+                )}
+
+                <button
+                  type="submit"
+                  className="bg-blue-700 hover:bg-blue-600 px-2 py-2 sm:py-1 disabled:opacity-50 rounded-sm font-mono"
+                  disabled={status === "sending"}
+                >
+                  {status === "sending" ? "..." : "send"}
+                </button>
+              </form>
             </motion.aside>
           )}
         </AnimatePresence>
