@@ -2,7 +2,7 @@
 
 A terminal and desktop-inspired portfolio built with Next.js, TypeScript, Tailwind CSS, and Motion.
 
-The interface keeps the interactive operating-system concept while making the core portfolio immediately accessible through a default overview window and persistent dock navigation.
+The interface preserves the interactive operating-system concept while making the core portfolio accessible through the original About window, terminal commands, fuzzy navigation, and persistent dock shortcuts.
 
 ## Portfolio content
 
@@ -16,7 +16,7 @@ The portfolio currently highlights:
 
 ## Features
 
-- Default professional overview with direct navigation
+- Original terminal-styled About window as the opening experience
 - Draggable desktop windows and mobile full-screen panels
 - Interactive terminal commands and fuzzy finder
 - Data-driven project and experience sections
