@@ -18,69 +18,55 @@ export default function ProjectsWindow({ onClose, zIndex, bringToFront }: Projec
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      sizeClassName="sm:w-[48rem] sm:h-[35rem]"
+      sizeClassName="sm:w-[44rem] sm:h-[32rem]"
     >
-      <div className="flex flex-1 min-h-0 flex-col gap-4 overflow-y-auto px-4 py-5 sm:px-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-        <header className="space-y-1 border-b border-white/10 pb-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-300/70">
-            Selected work
-          </p>
-          <h2 className="text-xl font-semibold text-white">Products, platforms, and experiments</h2>
-        </header>
+      <div className="flex flex-col flex-1 min-h-0 px-3 sm:px-2 py-2 sm:py-1 gap-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+        <div className="text-xs font-mono text-gray-300 shrink-0">
+          <span>pablo</span>
+          <span className="text-blue-700">@term.portfolio</span>
+          <span>:projects/info$ </span>
+        </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="flex flex-col gap-4 sm:gap-3">
           {projects.map((project) => (
-            <article
-              key={project.title}
-              className={`flex flex-col rounded-xl border p-4 transition ${
-                project.featured
-                  ? "border-blue-400/25 bg-gradient-to-br from-blue-500/[0.12] via-slate-950 to-cyan-500/[0.06] sm:col-span-2"
-                  : "border-white/10 bg-white/[0.025] hover:border-blue-400/20 hover:bg-white/[0.04]"
-              }`}
-            >
-              <div className={project.featured ? "sm:grid sm:grid-cols-[1.3fr_1fr] sm:gap-6" : ""}>
-                <div>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.16em] text-blue-300/80">
-                    {project.eyebrow}
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold text-white">{project.title}</h3>
-                  <p className="mt-2 text-xs leading-5 text-slate-300 sm:text-[13px]">
-                    {project.description}
-                  </p>
-                </div>
-
-                <ul className={`${project.featured ? "mt-4 sm:mt-0" : "mt-3"} space-y-2 text-xs leading-5 text-slate-400`}>
-                  {project.highlights.map((highlight) => (
-                    <li key={highlight} className="flex gap-2">
-                      <span className="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-cyan-400/80" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
+            <article key={project.title} className="text-[11px] sm:text-[10px] font-mono flex flex-col gap-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-white text-sm sm:text-xs">{project.title}</h2>
+                {project.featured && <span className="text-blue-400">[featured]</span>}
+                <span className="text-white/35">{project.eyebrow}</span>
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-1.5" aria-label={`${project.title} technologies`}>
+              <ul className="flex flex-wrap gap-1 font-thin italic text-white">
                 {project.tech.map((tech) => (
-                  <Link
-                    key={tech.name}
-                    href={tech.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-md border border-white/10 bg-black/20 px-2 py-1 font-mono text-[9px] text-slate-400 transition hover:border-blue-400/20 hover:text-slate-200"
-                  >
-                    {tech.name}
-                  </Link>
+                  <li key={tech.name} className="relative overflow-hidden group/item flex gap-1 px-1 cursor-default">
+                    <span className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                    <Link href={tech.url} target="_blank" rel="noreferrer" className="relative z-10 flex gap-1 items-center">
+                      <span>{tech.name}</span>
+                      <ArrowUpRightIcon size={11} />
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <p className="text-white/50 leading-relaxed">{project.description}</p>
+
+              <ul className="flex flex-col gap-1 text-white/40 leading-relaxed">
+                {project.highlights.map((highlight) => (
+                  <li key={highlight} className="flex gap-2">
+                    <span className="text-blue-500">-</span>
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex flex-wrap gap-3 pt-1">
                 {project.links.map((link) => (
                   <Link
                     key={link.label}
                     href={link.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-md border border-blue-400/20 bg-blue-400/[0.08] px-2.5 py-1.5 font-mono text-[10px] text-blue-200 transition hover:bg-blue-400/[0.16]"
+                    className="flex items-center gap-1 text-blue-400 hover:underline"
                   >
                     {link.label} <ArrowUpRightIcon size={11} />
                   </Link>
