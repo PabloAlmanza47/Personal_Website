@@ -132,7 +132,7 @@ export default function Terminal({
       case "help":
         addHistory(command, [
           "Available commands:",
-          "  open <window>  overview, about, projects, experience, music",
+          "  open <window>  about, projects, experience, music",
           "  ls / cd / cat  browse the portfolio file system",
           "  whoami         quick profile summary",
           "  resume        open the current resume",
@@ -304,7 +304,7 @@ export default function Terminal({
               Type <span className="text-blue-300">help</span> for commands or press{" "}
               <span className="text-blue-300">shift+f</span> to search.
             </p>
-            <p className="sm:hidden">Try: open overview, whoami, open projects</p>
+            <p className="sm:hidden">Try: open about, whoami, open projects</p>
             <p className="text-white/15">----------------------------------------------------------------------</p>
           </div>
 
