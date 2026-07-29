@@ -36,125 +36,95 @@ export default function OverviewWindow({
       zIndex={zIndex}
       bringToFront={bringToFront}
       onClose={onClose}
-      sizeClassName="sm:w-[46rem] sm:h-[32rem]"
+      sizeClassName="sm:w-[43rem] sm:h-[30rem]"
       initialOffset={{ x: 0, y: 22 }}
     >
-      <div className="flex flex-1 min-h-0 flex-col overflow-y-auto px-4 py-5 sm:px-6 sm:py-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-        <div className="flex flex-col gap-6">
-          <header className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-300/80">
-              <span className="rounded-full border border-cyan-400/20 bg-cyan-400/5 px-3 py-1">
-                Software Engineer
-              </span>
-              <span className="text-white/35">Texas A&amp;M Computer Science · May 2028</span>
-            </div>
+      <div className="flex flex-1 min-h-0 flex-col gap-3 overflow-y-auto px-3 py-2 font-mono scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent sm:px-2 sm:py-1">
+        <div className="text-xs text-gray-300 shrink-0">
+          <span>pablo</span>
+          <span className="text-blue-700">@term.portfolio</span>
+          <span>:overview/info$ </span>
+        </div>
 
-            <div className="space-y-2">
-              <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Pablo Almanza
-              </h1>
-              <p className="max-w-2xl text-sm leading-6 text-slate-300 sm:text-[15px]">
-                I build production software and community-focused platforms across C#, Angular,
-                TypeScript, Next.js, and SQL. My work currently spans electrical test-data software,
-                full-stack product development, and technical leadership for Texas A&amp;M SHPE.
-              </p>
-            </div>
-          </header>
+        <section className="space-y-2">
+          <div>
+            <h2 className="text-lg text-blue-400 sm:text-base">Pablo Almanza</h2>
+            <p className="text-[11px] text-white/45 sm:text-[9px]">
+              Software Engineer · Texas A&amp;M Computer Science · May 2028
+            </p>
+          </div>
 
-          <section className="grid gap-3 sm:grid-cols-2">
-            <article className="rounded-xl border border-emerald-400/15 bg-emerald-400/[0.04] p-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-300/80">
-                Current
-              </p>
-              <h2 className="mt-2 text-base font-medium text-white">PowerDB</h2>
-              <p className="mt-1 text-xs text-slate-400">Part-Time Software Engineer · May 2026 — Present</p>
-            </article>
+          <p className="max-w-2xl text-[11px] leading-relaxed text-white/70 sm:text-[10px]">
+            I build production software and community-focused platforms across C#, Angular,
+            TypeScript, Next.js, and SQL. My work currently spans electrical test-data software,
+            full-stack product development, and technical leadership for Texas A&amp;M SHPE.
+          </p>
+        </section>
 
-            <article className="rounded-xl border border-blue-400/15 bg-blue-400/[0.04] p-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-blue-300/80">
-                Up next
-              </p>
-              <h2 className="mt-2 text-base font-medium text-white">Frogslayer</h2>
-              <p className="mt-1 text-xs text-slate-400">Incoming Junior Software Developer · Starts Aug 17</p>
-            </article>
-          </section>
+        <section className="grid gap-3 border-y border-gray-800 py-3 sm:grid-cols-2 sm:gap-2 sm:py-2">
+          <div className="space-y-1">
+            <p className="text-[10px] text-green-400">[current]</p>
+            <h3 className="text-xs text-white">PowerDB</h3>
+            <p className="text-[10px] leading-relaxed text-white/45 sm:text-[9px]">
+              Part-Time Software Engineer · May 2026 — Present
+            </p>
+          </div>
 
-          <section className="rounded-xl border border-blue-400/20 bg-gradient-to-br from-blue-500/[0.10] via-slate-950 to-cyan-500/[0.06] p-4 sm:p-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="max-w-xl">
-                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-blue-300">
-                  Featured project
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-white">SHPE Connect</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  A full-stack member-networking platform built for the Texas A&amp;M SHPE chapter,
-                  with authentication, role-based access, member profiles, a searchable directory,
-                  and officer workflows.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => openWindow("projects")}
-                className="inline-flex shrink-0 items-center gap-1 rounded-md border border-blue-400/25 bg-blue-400/10 px-3 py-2 font-mono text-xs text-blue-200 transition hover:bg-blue-400/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-              >
-                View projects <ArrowUpRightIcon size={14} />
-              </button>
-            </div>
-          </section>
+          <div className="space-y-1">
+            <p className="text-[10px] text-blue-400">[incoming]</p>
+            <h3 className="text-xs text-white">Frogslayer</h3>
+            <p className="text-[10px] leading-relaxed text-white/45 sm:text-[9px]">
+              Junior Software Developer · Starts August 17, 2026
+            </p>
+          </div>
+        </section>
 
-          <section className="flex flex-wrap gap-2" aria-label="Primary skills">
+        <section className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-[10px] text-blue-400">featured_project:</p>
+            <button
+              type="button"
+              onClick={() => openWindow("projects")}
+              className="flex items-center gap-1 text-xs text-white hover:underline focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue-400"
+            >
+              SHPE Connect <ArrowUpRightIcon size={11} />
+            </button>
+          </div>
+          <p className="text-[11px] leading-relaxed text-white/55 sm:text-[10px]">
+            A full-stack member-networking platform for the Texas A&amp;M SHPE chapter with
+            authentication, role-based access, member profiles, searchable directory tools,
+            and officer workflows.
+          </p>
+        </section>
+
+        <section className="space-y-1">
+          <p className="text-[10px] text-white/45">skills:</p>
+          <ul className="flex flex-wrap gap-x-2 gap-y-1 text-[10px] italic text-white sm:text-[9px]">
             {skills.map((skill) => (
-              <span
-                key={skill}
-                className="rounded-md border border-white/10 bg-white/[0.035] px-2.5 py-1 font-mono text-[10px] text-slate-300"
-              >
-                {skill}
-              </span>
+              <li key={skill} className="relative overflow-hidden px-1 group/item">
+                <span className="absolute inset-0 -left-1 -right-1 bg-linear-to-r from-blue-800 to-purple-700 -translate-x-full group-hover/item:translate-x-0 transition-transform duration-300 ease-in-out" />
+                <span className="relative z-10">{skill}</span>
+              </li>
             ))}
-          </section>
+          </ul>
+        </section>
 
-          <footer className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-4">
-            <button
-              type="button"
-              onClick={() => openWindow("experience")}
-              className="rounded-md bg-blue-600 px-3 py-2 font-mono text-xs text-white transition hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-            >
-              Experience
-            </button>
-            <button
-              type="button"
-              onClick={() => openWindow("about")}
-              className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-xs text-slate-200 transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-            >
-              About &amp; contact
-            </button>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-xs text-slate-200 transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-            >
-              <ReadCvLogoIcon size={15} /> Resume
-            </a>
-            <a
-              href="https://github.com/PabloAlmanza47"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub profile"
-              className="rounded-md border border-white/10 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/[0.08] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-            >
-              <GithubLogoIcon size={16} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/pabloalmanza/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn profile"
-              className="rounded-md border border-white/10 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/[0.08] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
-            >
-              <LinkedinLogoIcon size={16} />
-            </a>
-          </footer>
+        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-gray-800 pt-3 text-[11px] sm:gap-2 sm:pt-2 sm:text-[9px]">
+          <button type="button" onClick={() => openWindow("experience")} className="text-blue-400 hover:underline">
+            open experience
+          </button>
+          <button type="button" onClick={() => openWindow("about")} className="text-blue-400 hover:underline">
+            open about
+          </button>
+          <a href="/resume.pdf" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-gray-300 hover:text-blue-400">
+            <ReadCvLogoIcon size={14} /> resume
+          </a>
+          <a href="https://github.com/PabloAlmanza47" target="_blank" rel="noreferrer" aria-label="GitHub profile" className="text-gray-300 hover:text-blue-400">
+            <GithubLogoIcon size={14} />
+          </a>
+          <a href="https://www.linkedin.com/in/pabloalmanza/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile" className="text-gray-300 hover:text-blue-400">
+            <LinkedinLogoIcon size={14} />
+          </a>
         </div>
       </div>
     </WindowFrame>
