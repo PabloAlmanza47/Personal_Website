@@ -7,7 +7,6 @@ import EmailSentWindow from "../../components/EmailSentWindow";
 import Experience from "../../components/Experience";
 import MenuBar from "../../components/MenuBar";
 import MusicWindow from "../../components/MusicWindow";
-import OverviewWindow from "../../components/OverviewWindow";
 import ProjectsWindow from "../../components/ProjectsWindow";
 import Terminal from "../../components/Terminal";
 import type { WindowName } from "../../data/windows";
@@ -21,17 +20,16 @@ type OpenWindow = {
 };
 
 const dockItems: { name: AppWindowName; label: string; shortLabel: string }[] = [
-  { name: "overview", label: "Overview", shortLabel: "home" },
+  { name: "about", label: "About and contact", shortLabel: "about" },
   { name: "experience", label: "Experience", shortLabel: "work" },
   { name: "projects", label: "Projects", shortLabel: "build" },
-  { name: "about", label: "About and contact", shortLabel: "about" },
   { name: "terminal", label: "Terminal", shortLabel: ">_" },
   { name: "music", label: "Music", shortLabel: "music" },
 ];
 
 export default function Home() {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([
-    { id: "overview", name: "overview", z: 1 },
+    { id: "about", name: "about", z: 1 },
   ]);
   const [topZ, setTopZ] = useState(1);
 
@@ -84,13 +82,10 @@ export default function Home() {
       {openWindows.length === 0 && (
         <button
           type="button"
-          onClick={() => openWindow("overview")}
-          className="relative z-10 rounded-xl border border-white/10 bg-slate-950/75 px-6 py-5 text-left shadow-2xl shadow-black/30 backdrop-blur-xl transition hover:border-blue-400/25 hover:bg-slate-900/85"
+          onClick={() => openWindow("about")}
+          className="relative z-10 font-mono text-xs text-white/45 transition hover:text-blue-400"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-300/70">
-            Pablo Almanza
-          </p>
-          <p className="mt-2 text-sm text-slate-300">Open portfolio overview</p>
+          Pablo Almanza&apos;s terminal portfolio — open about
         </button>
       )}
 
@@ -104,8 +99,6 @@ export default function Home() {
           };
 
           switch (window.name) {
-            case "overview":
-              return <OverviewWindow {...sharedProps} openWindow={openWindow} />;
             case "terminal":
               return <Terminal {...sharedProps} openWindow={openWindow} />;
             case "about":
