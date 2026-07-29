@@ -73,7 +73,7 @@ export default function Home() {
   };
 
   return (
-    <main className="portfolio-desktop relative flex h-dvh items-center justify-center overflow-hidden bg-slate-950 px-3 font-sans text-white sm:px-0">
+    <main className="portfolio-desktop relative flex h-dvh items-center justify-center overflow-hidden bg-slate-950 px-3 font-bold text-white sm:px-0">
       <MenuBar />
 
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_28%,rgba(37,99,235,0.17),transparent_30%),radial-gradient(circle_at_72%_68%,rgba(6,182,212,0.10),transparent_32%)]" />
